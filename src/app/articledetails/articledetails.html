@@ -3,10 +3,28 @@
   <!-- Top Bar -->
   <div class="top-bar">
 
-    <button class="icon-btn">
-      <!-- Back icon -->
-      <svg width="22" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
-    </button>
+    <!-- Back Button -->
+    <div class="back-container" (click)="goBack()">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+    <!-- White background with black border -->
+    <circle cx="24" cy="24" r="22" fill="white" stroke="black" stroke-width="2"/>
+
+    <!-- Straight left arrow -->
+    <path d="M30 24H18" 
+            stroke="black" 
+            stroke-width="3" 
+            stroke-linecap="round"/>
+
+    <path d="M22 20L18 24L22 28" 
+            stroke="black" 
+            stroke-width="3" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"/>
+    </svg>
+
+    </div>
 
     <span class="spacer"></span>
 

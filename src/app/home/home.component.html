@@ -12,31 +12,6 @@
     </button>
   </div>
 
-<!-- Back Button -->
-<div class="back-container" (click)="goBack()">
-  <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
-     xmlns="http://www.w3.org/2000/svg">
-
-  <!-- White background with black border -->
-  <circle cx="24" cy="24" r="22" fill="white" stroke="black" stroke-width="2"/>
-
-  <!-- Straight left arrow -->
-  <path d="M30 24H18" 
-        stroke="black" 
-        stroke-width="3" 
-        stroke-linecap="round"/>
-
-  <path d="M22 20L18 24L22 28" 
-        stroke="black" 
-        stroke-width="3" 
-        stroke-linecap="round" 
-        stroke-linejoin="round"/>
-</svg>
-
-</div>
-
-<!-- Rest of your page ... -->
-
   <!-- 📰 Featured Article -->
   <div class="featured">
     <img [src]="featuredArticle.image" class="featured-img"/>
@@ -72,7 +47,7 @@
   <div class="article-list">
     <div class="article-item" *ngFor="let a of articles">
       <div class="article-text">
-        <h3>{{ a.title }}</h3>
+        <h3><a [routerLink]="['/details', a.id]">{{ a.title }}</a></h3>
         <p>{{ a.description }}</p>
         <div class="stats">
           <span>{{ a.date }}</span>

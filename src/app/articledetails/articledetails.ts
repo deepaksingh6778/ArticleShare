@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-articledetails',
@@ -9,6 +10,8 @@ import { CommonModule } from '@angular/common';
   styleUrl: './articledetails.scss',
 })
 export class ArticleDetailsComponent {
+
+ constructor(private router: Router) {}
 
   article = {
     tag: 'Blockchain',
@@ -66,7 +69,8 @@ export class ArticleDetailsComponent {
   toggleComments() {
     this.showComments = !this.showComments;
   }
+
+   goBack() {
+    window.history.back();
+  }
 }
-
-
-

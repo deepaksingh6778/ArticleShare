@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule,FormsModule, RouterModule],
   styleUrls: ['./home.component.scss'],
   templateUrl: './home.component.html'
 })
@@ -29,6 +29,7 @@ export class HomeComponent {
 
   articles = [
     {
+      id: 1,
       title: "The economics behind unpaid internship",
       description: "Corporate companies often leverage unpaid interns...",
       author: "Brandon Smith",
@@ -38,6 +39,7 @@ export class HomeComponent {
       image: "assets/thumb1.png"
     },
     {
+      id: 2,
       title: "Embark on a Cosmic Adventure",
       description: "The universe is full of wonders...",
       author: "Ryan Green",
@@ -47,6 +49,7 @@ export class HomeComponent {
       image: "assets/thumb2.png"
     },
     {
+      id: 3,
       title: "Classical musician: Build your brand on social media",
       description: "With social media anyone can build a brand...",
       author: "Anthony Adams",
@@ -56,6 +59,7 @@ export class HomeComponent {
       image: "assets/thumb3.png"
     },
     {
+      id: 4,
       title: "3 non-Latin script languages I found the easiest",
       description: "Learning languages expands the mind...",
       author: "Sarah Jackson",
