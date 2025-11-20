@@ -1,0 +1,101 @@
+<div class="container">
+
+  <!-- Top Bar -->
+  <div class="top-bar">
+
+    <button class="icon-btn">
+      <!-- Back icon -->
+      <svg width="22" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+
+    <span class="spacer"></span>
+
+    <!-- Notifications -->
+    <button class="icon-btn">
+      <svg width="22" viewBox="0 0 24 24"><path d="M12 22a2 2 0 002-2H10a2 2 0 002 2zm6-6V11a6 6 0 00-4-5.659V4a2 2 0 10-4 0v1.341A6 6 0 006 11v5L4 18v1h16v-1z"/></svg>
+    </button>
+
+    <!-- Avatar -->
+    <button class="avatar-btn">
+      <svg width="30" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Article Header -->
+  <div class="article-header">
+
+    <span class="tag">{{ article.tag }}</span>
+    <p class="date">{{ article.date }}</p>
+
+    <h1>{{ article.title }}</h1>
+
+    <div class="author-row">
+      <svg width="26" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+      <div>
+        <p class="author-name">{{ article.author.name }}</p>
+        <p class="author-role">{{ article.author.role }}</p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div>
+        <svg width="20" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
+        {{ article.stats.views }}
+      </div>
+
+      <div>
+        <svg width="20" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5a5.5 5.5 0 0111 0 5.5 5.5 0 0111 0c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        {{ article.stats.likes }}
+      </div>
+
+      <div>
+        <svg width="20" viewBox="0 0 24 24"><path d="M4 12v8l4-4"/><path d="M20 12H4"/><path d="M12 4l4 4-4 4"/></svg>
+      </div>
+
+      <div>
+        <svg width="22" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hero Image -->
+  <div class="hero-image"></div>
+
+  <!-- Article Content -->
+  <div class="article-content">
+
+    <p>
+      Blockchain technology has emerged as a groundbreaking innovation with
+      the potential to revolutionize industries...
+    </p>
+
+    <p>
+      This raises an intriguing question: Was blockchain intentionally made
+      confusing? In this article...
+    </p>
+
+    <h2>Demystifying Blockchain:</h2>
+
+    <p>
+      While the complexity of blockchain may initially appear intimidating...
+    </p>
+
+  </div>
+
+  <!-- Recommended Section -->
+  <h2 class="recommend-title">Recommend to you</h2>
+
+  <div class="recommended-grid">
+    <div class="rec-card" *ngFor="let item of recommended">
+      <div class="rec-image"></div>
+      <p class="rec-title">{{ item.title }}</p>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,68 @@
+<div class="discover-container">
+
+  <!-- Header & Search -->
+  <div class="header">
+    <h1>Discover</h1>
+    <p>Step into a new zone, join a new conversation.</p>
+
+    <div class="search-row">
+      <input type="text" placeholder="Search..." />
+
+      <select>
+        <option>Articles</option>
+        <option>Authors</option>
+      </select>
+    </div>
+
+    <!-- Trending Keywords -->
+    <div class="trending">
+      <span *ngFor="let tag of trending" class="tag"># {{ tag }}</span>
+    </div>
+  </div>
+
+  <!-- Readers' Choice -->
+  <section>
+    <h2>Readers' choice</h2>
+
+    <div class="card-grid">
+      <div class="article-card" *ngFor="let item of readersChoice">
+        <div class="img-placeholder"></div>
+        <p class="title">{{ item.title }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Rising authors -->
+  <section>
+    <h2>Rising authors</h2>
+
+    <div class="card-grid">
+
+      <!-- Social Connect Card -->
+      <div class="connect-card">
+        <button class="close">×</button>
+        <p>Connect to your social media.</p>
+        <small>Discover Quill writers you already follow on social media</small>
+
+        <div class="social-buttons">
+          <button>G</button>
+          <button>O</button>
+          <button>W</button>
+        </div>
+      </div>
+
+      <!-- Author Cards -->
+      <div class="author-card" *ngFor="let author of authors">
+        <span class="badge">{{ author.tag }}</span>
+
+        <div class="img-placeholder"></div>
+
+        <h3>{{ author.name }}</h3>
+        <p class="views">{{ author.views }}+ views</p>
+
+        <button class="visit-btn">Visit</button>
+      </div>
+
+    </div>
+  </section>
+</div>

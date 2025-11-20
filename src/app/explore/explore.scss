@@ -1,0 +1,176 @@
+.discover-container {
+  padding: 32px;
+  max-width: 1200px;
+  margin: auto;
+  color: #242424;
+  font-family: Inter, sans-serif;
+}
+
+.header {
+  text-align: center;
+
+  h1 {
+    font-size: 42px;
+    margin-bottom: 4px;
+  }
+
+  p {
+    color: #777;
+    margin-bottom: 24px;
+  }
+
+  .search-row {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+
+    input, select {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 15px;
+    }
+
+    input {
+      width: 260px;
+    }
+  }
+
+  .trending {
+    margin-top: 18px;
+
+    .tag {
+      background: #f3f3f3;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin: 0 5px;
+      font-size: 13px;
+    }
+  }
+}
+
+section {
+  margin-top: 48px;
+
+  h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 20px;
+}
+
+/* Article Cards */
+.article-card {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 10px;
+
+  .img-placeholder {
+    width: 100%;
+    height: 130px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+}
+
+/* Author Cards */
+.author-card, .connect-card {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  text-align: center;
+
+  .img-placeholder {
+    width: 100%;
+    height: 130px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+}
+
+.author-card {
+  .badge {
+    background: #4d7cff;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    position: absolute;
+    top: 14px;
+    left: 14px;
+  }
+
+  h3 {
+    margin: 5px 0;
+    font-size: 16px;
+  }
+
+  .views {
+    margin-bottom: 12px;
+    font-size: 13px;
+    color: #777;
+  }
+
+  .visit-btn {
+    width: 100%;
+    padding: 8px;
+    background: #242424;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
+
+/* Connect card */
+.connect-card {
+  text-align: left;
+
+  .close {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  p {
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  small {
+    color: #777;
+  }
+
+  .social-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+
+    button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: #e5e5e5;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  }
+}
