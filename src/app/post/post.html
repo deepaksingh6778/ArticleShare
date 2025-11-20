@@ -1,0 +1,44 @@
+<div class="page">
+
+    <!-- Thumbnail Upload -->
+    <label class="label"><strong>Add Thumbnail</strong></label>
+    <input type="file" accept="image/*" (change)="onThumbnailSelected($event)">
+    
+    <img 
+      *ngIf="thumbnailURL" 
+      [src]="thumbnailURL"
+      class="thumb-preview"
+    />
+
+    <!-- Title -->
+    <h1 class="title">Create a New Post</h1>
+    <input id="postTitle" class="input" placeholder="My first article..." />
+
+    <!-- Category -->
+    <select id="categorySelect" class="input">
+        <option>Select category</option>
+        <option>Technology</option>
+        <option>Design</option>
+        <option>Science</option>
+    </select>
+
+    <!-- Quill Toolbar -->
+    <div id="toolbar">
+      <button class="ql-bold"></button>
+      <button class="ql-italic"></button>
+      <button class="ql-underline"></button>
+
+      <button class="ql-list" value="ordered"></button>
+      <button class="ql-list" value="bullet"></button>
+
+      <button class="ql-link"></button>
+      <button class="ql-image"></button>
+      <button class="ql-video"></button>
+    </div>
+
+    <!-- Quill Editor -->
+    <div id="editor"></div>
+
+    <button class="publish" (click)="submit()">Publish</button>
+
+</div>

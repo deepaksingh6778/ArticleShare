@@ -5,6 +5,7 @@ import { AuthCallbackComponent } from './auth-callback.component';
 import { HomeComponent } from './home/home.component';
 import { ArticleDetailsComponent } from './articledetails/articledetails';
 import { ExploreComponent } from './explore/explore';
+import { PostComponent } from './post/post';
 
 export const routes: Routes = [
   {
@@ -12,6 +13,11 @@ export const routes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     canActivate: [AuthGuard]
+  },
+   {
+    path: 'post',
+    component: PostComponent,
+    pathMatch: 'full',
   },
   {
     path: 'details/:id',

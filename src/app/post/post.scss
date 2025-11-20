@@ -1,0 +1,48 @@
+.page {
+  width: 900px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.thumb-preview {
+  width: 220px;
+  margin: 10px 0 20px 0;
+  border-radius: 6px;
+}
+
+.title {
+  margin: 20px 0 10px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e1e1e1;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 1rem;
+}
+
+#editor {
+  height: 300px;
+  margin-top: 15px;
+  border: 1px solid #ddd;
+}
+
+.publish {
+  margin-top: 20px;
+  background: black;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
