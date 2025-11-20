@@ -104,3 +104,23 @@
   font-size: 1rem;
   cursor: pointer;
 }
+
+.back-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-container svg {
+  opacity: 0.85;
+}
+
+.back-container:hover svg {
+  opacity: 1;
+}

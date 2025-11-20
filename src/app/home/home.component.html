@@ -5,12 +5,37 @@
     <div class="search-container">
       <input type="text" placeholder="Search..." class="search-box" />
     </div>
-    <button class="draft-button">
+    <button class="draft-button" (click)="navigateToPost()">
       <span>Draft an article</span>
       <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t27 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
       
     </button>
   </div>
+
+<!-- Back Button -->
+<div class="back-container" (click)="goBack()">
+  <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- White background with black border -->
+  <circle cx="24" cy="24" r="22" fill="white" stroke="black" stroke-width="2"/>
+
+  <!-- Straight left arrow -->
+  <path d="M30 24H18" 
+        stroke="black" 
+        stroke-width="3" 
+        stroke-linecap="round"/>
+
+  <path d="M22 20L18 24L22 28" 
+        stroke="black" 
+        stroke-width="3" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"/>
+</svg>
+
+</div>
+
+<!-- Rest of your page ... -->
 
   <!-- 📰 Featured Article -->
   <div class="featured">

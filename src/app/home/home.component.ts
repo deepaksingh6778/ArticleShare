@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +11,8 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './home.component.html'
 })
 export class HomeComponent {
+
+ constructor(private router: Router) {}
 
   sortBy = 'latest';
 
@@ -66,5 +69,13 @@ export class HomeComponent {
   changeSort(value: string) {
     this.sortBy = value;
     // add future sorting logic
+  }
+
+  navigateToPost() {
+    this.router.navigate(['/post']);
+  }
+
+  goBack() {
+    this.router.navigate(['/']);
   }
 }
