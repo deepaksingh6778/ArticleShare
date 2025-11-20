@@ -153,3 +153,172 @@
     }
   }
 }
+
+/* ======================
+   COMMENT PANEL OVERLAY
+   ====================== */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(40, 40, 40, 0.45);
+  backdrop-filter: blur(2px);
+  z-index: 90;
+}
+
+/* ======================
+   SLIDING PANEL
+   ====================== */
+
+.comment-panel {
+  position: fixed;
+  top: 0;
+  right: -480px;
+  width: 480px;
+  height: 100%;
+  background: #fff;
+  z-index: 100;
+  padding: 28px;
+  box-shadow: -3px 0 8px rgba(0,0,0,0.15);
+  transition: right 0.32s ease;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.comment-panel.open {
+  right: 0;
+}
+
+/* Header */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Add Comment */
+.add-comment {
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #dcdcdc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+  }
+
+  input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+  }
+
+  .post-btn {
+    background: #333;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+}
+
+/* Sorting */
+.sort-row {
+  font-size: 15px;
+  margin: 12px 0;
+  cursor: pointer;
+}
+
+/* Comment List */
+.comment-list {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 6px;
+}
+
+.comment {
+  padding: 16px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.comment-header {
+  display: flex;
+  gap: 12px;
+
+  .time {
+    color: #888;
+  }
+}
+
+.comment-text {
+  margin: 8px 0 12px 0;
+  color: #444;
+}
+
+.reply-btn {
+  font-size: 14px;
+  background: none;
+  border: none;
+  color: #555;
+  cursor: pointer;
+}
+
+/* Replies */
+.reply {
+  margin-left: 32px;
+  margin-top: 14px;
+  background: #f7f7f7;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.reply-header {
+  display: flex;
+  gap: 10px;
+
+  .role {
+    background: #222;
+    color: #fff;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .time {
+    color: #777;
+  }
+}
+
+.reply-text {
+  margin: 6px 0 0 0;
+}
+
+/* Show more */
+.show-more {
+  width: 100%;
+  padding: 12px;
+  margin-top: 22px;
+  background: #eef0f2;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}

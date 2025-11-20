@@ -57,9 +57,9 @@
         <svg width="20" viewBox="0 0 24 24"><path d="M4 12v8l4-4"/><path d="M20 12H4"/><path d="M12 4l4 4-4 4"/></svg>
       </div>
 
-      <div>
+      <div (click)="toggleComments()">
         <svg width="22" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
-      </div>
+      </div> 
     </div>
 
   </div>
@@ -96,6 +96,63 @@
       <div class="rec-image"></div>
       <p class="rec-title">{{ item.title }}</p>
     </div>
+  </div>
+
+</div>
+<!-- Background Overlay -->
+<div class="overlay" *ngIf="showComments" (click)="toggleComments()"></div>
+
+<!-- Comment Panel -->
+<div class="comment-panel" [class.open]="showComments">
+
+  <div class="panel-header">
+    <h2>Comment (4,532)</h2>
+    <button class="close-btn" (click)="toggleComments()">
+      <svg width="24" viewBox="0 0 24 24">
+        <path d="M6 6l12 12M6 18l12-12" stroke-width="2" stroke="#333"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Add Comment Input -->
+  <div class="add-comment">
+    <div class="avatar">A</div>
+    <input type="text" placeholder="Write a comment..." />
+    <button class="post-btn">Post</button>
+  </div>
+
+  <hr />
+
+  <!-- Sorting -->
+  <div class="sort-row">
+    Most relevant ▾
+  </div>
+
+  <!-- Comment List -->
+  <div class="comment-list">
+    <div class="comment" *ngFor="let c of comments">
+
+      <div class="comment-header">
+        <strong>{{ c.author }}</strong>
+        <span class="time">{{ c.time }}</span>
+      </div>
+
+      <p class="comment-text">{{ c.text }}</p>
+
+      <button class="reply-btn">Reply</button>
+
+      <!-- Replies -->
+      <div class="reply" *ngFor="let r of c.replies">
+        <div class="reply-header">
+          <strong>{{ r.author }}</strong>
+          <span class="role" *ngIf="r.role">Author</span>
+          <span class="time">{{ r.time }}</span>
+        </div>
+        <p class="reply-text">{{ r.text }}</p>
+      </div>
+    </div>
+
+    <button class="show-more">Show more discussion (4,512)</button>
   </div>
 
 </div>
