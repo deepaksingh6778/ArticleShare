@@ -41,4 +41,8 @@ export class PostComponent implements AfterViewInit {
 
     alert('Post submitted!');
   }
+  
+   goBack() {
+    window.history.back();
+  }
 }
