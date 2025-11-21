@@ -46,8 +46,12 @@
   <!-- Article Header -->
   <div class="article-header">
 
-    <span class="tag">{{ article.tag }}</span>
-    <p class="date">{{ article.date }}</p>
+    <div class="header-top-row">
+      <div class="tags-container">
+        <span class="tag" *ngFor="let tag of article.tags">{{ tag }}</span>
+      </div>
+      <p class="date">{{ article.date }}</p>
+    </div>
 
     <h1>{{ article.title }}</h1>
 

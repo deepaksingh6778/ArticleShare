@@ -16,7 +16,7 @@ export class ArticleDetailsComponent implements OnInit {
 
   article = {
     id: 1, // Added ID for IndexedDB
-    tag: 'Blockchain',
+    tags: ['Blockchain', 'Technology'],
     date: 'Jun 27, 2024',
     title: 'Demystifying Blockchain: Was it intentionally made confusing?',
     author: {
@@ -84,7 +84,7 @@ export class ArticleDetailsComponent implements OnInit {
     // Try to load article from IndexedDB
     const storedArticle = await this.indexedDbService.get<any>('articles', this.article.id); // Use the article.id from route
     if (storedArticle) {
-      this.article = storedArticle;
+      this.article = { ...this.article, ...storedArticle };
     } else {
       // If not found, add the default article to IndexedDB
       await this.indexedDbService.add('articles', this.article);

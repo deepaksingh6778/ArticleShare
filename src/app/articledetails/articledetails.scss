@@ -42,6 +42,17 @@
 .article-header {
   margin-bottom: 24px;
 
+  .header-top-row {
+    display: flex;
+    align-items: center;
+  }
+
+  .tags-container {
+    display: flex;
+    gap: 8px; /* Adds space between tags */
+    margin-right: 16px; /* Adds space between the last tag and the date */
+  }
+
   .tag {
     padding: 6px 14px;
     background: #ececec;
@@ -50,7 +61,7 @@
   }
 
   .date {
-    margin-top: 6px;
+    margin: 0;
     color: #777;
   }
 
