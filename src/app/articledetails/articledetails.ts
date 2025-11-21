@@ -21,10 +21,8 @@ export class ArticleDetailsComponent {
       name: 'Benjamin Foster',
       role: 'Editor & Writer'
     },
-    stats: {
-      views: '1.8M',
-      likes: '6.4K'
-    }
+    views: '1.8M',
+    likes: '6.4K'
   };
 
    recommended = [
