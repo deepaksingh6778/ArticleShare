@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class IndexedDbService {
   private dbName = 'ArticleShareDB';
-  private dbVersion = 1;
+  private dbVersion = 3;
   private db: IDBDatabase | null = null;
 
   constructor() {}
@@ -27,10 +27,10 @@ export class IndexedDbService {
         const db = (event.target as IDBOpenDBRequest).result;
         // Create object stores if they don't exist
         if (!db.objectStoreNames.contains('articles')) {
-          db.createObjectStore('articles', { keyPath: 'id', autoIncrement: true });
+          db.createObjectStore('articles', { keyPath: 'id' });
         }
         if (!db.objectStoreNames.contains('comments')) {
-          db.createObjectStore('comments', { keyPath: 'id', autoIncrement: true });
+          db.createObjectStore('comments', { keyPath: 'id' });
         }
         console.log('IndexedDB upgrade complete.');
       };

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
-import { IndexedDbService } from '../indexed-db.service'; // Corrected path for the service
+import { IndexedDbService } from '../indexed-db.service';
 
 @Component({
   selector: 'app-articledetails',
