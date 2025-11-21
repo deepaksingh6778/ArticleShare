@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
+import { IndexedDbService } from '../indexed-db.service';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +11,14 @@ import { Router, RouterModule } from '@angular/router';
   styleUrls: ['./home.component.scss'],
   templateUrl: './home.component.html'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 
- constructor(private router: Router) {}
+  async ngOnInit() {
+    await this.indexedDbService.openDatabase();
+    await this.seedArticles();
+  }
+
+ constructor(private router: Router, private indexedDbService: IndexedDbService) {}
 
   sortBy = 'latest';
 
@@ -81,6 +87,16 @@ export class HomeComponent {
       image: "assets/thumb4.png"
     }
   ];
+
+  private async seedArticles() {
+    const articles = await this.indexedDbService.getAll('articles');
+    if (articles.length === 0) {
+      console.log('No articles found in DB, seeding...');
+      for (const article of this.articles) {
+        await this.indexedDbService.add('articles', article);
+      }
+    }
+  }
 
   changeSort(value: string) {
     this.sortBy = value;
