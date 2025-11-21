@@ -14,22 +14,22 @@
 
   <!-- 📰 Featured Article -->
   <div class="featured">
-    <img [src]="featuredArticle.image" class="featured-img"/>
+    <img [src]="featuredArticle?.image" (error)="$event.target.src = 'assets/default.png'" class="featured-img"/>
 
-    <h2 class="featured-title">{{ featuredArticle.title }}</h2>
+    <h2 class="featured-title">{{ featuredArticle?.title }}</h2>
 
-    <p class="featured-desc">{{ featuredArticle.description }}</p>
+    <p class="featured-desc">{{ featuredArticle?.description }}</p>
 
     <div class="featured-meta">
       <div class="tags">
-        <span class="tag" *ngFor="let t of featuredArticle.tags">{{ t }}</span>
+        <span class="tag" *ngFor="let t of featuredArticle?.tags">{{ t }}</span>
       </div>
 
       <div class="stats">
-        <span>{{ featuredArticle.date }}</span>
-        <span>👁 {{ featuredArticle.views }}</span>
-        <span>❤️ {{ featuredArticle.likes }}</span>
-        <span>✍ {{ featuredArticle.author }}</span>
+        <span>{{ featuredArticle?.date }}</span>
+        <span>👁 {{ featuredArticle?.views }}</span>
+        <span>❤️ {{ featuredArticle?.likes }}</span>
+        <span>✍ {{ featuredArticle?.author?.name }}</span>
       </div>
     </div>
   </div>

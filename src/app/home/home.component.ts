@@ -16,24 +16,18 @@ export class HomeComponent implements OnInit {
   constructor(private router: Router, private indexedDbService: IndexedDbService, private cdr: ChangeDetectorRef) {}
 
   articles: any[] = [];
+  featuredArticle: any = null;
 
   async ngOnInit() {
-    this.articles = await this.indexedDbService.getAll('articles');
-    this.cdr.detectChanges(); // Manually trigger change detection
+    const articlesFromDb = await this.indexedDbService.getAll('articles');
+    if (articlesFromDb && articlesFromDb.length > 0) {
+      this.articles = articlesFromDb;
+      this.featuredArticle = this.articles[this.articles.length - 1];
+    }
+    this.cdr.detectChanges();
   }
 
   sortBy = 'latest';
-
-  featuredArticle = {
-    title: "Demystifying Blockchain: Was it intentionally made confusing?",
-    description: "For many, the concept of blockchain can seem perplexing and shrouded in mystery...",
-    author: "Benjamin Foster",
-    date: "TODAY",
-    tags: ["Blockchain", "Finance"],
-    views: "1.2M",
-    likes: 94,
-    image: "assets/featured.png"
-  };
   
   changeSort(value: string) {
     this.sortBy = value;

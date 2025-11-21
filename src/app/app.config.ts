@@ -10,6 +10,17 @@ const articlesToSeed = [
   { id: 2, title: "Embark on a Cosmic Adventure", description: "The universe is full of wonders...", date: "TODAY", views: "19.4k", likes: 21, image: "assets/thumb2.png", author: { name: 'Ryan Green', role: 'Editor & Writer' } },
   { id: 3, title: "Classical musician: Build your brand on social media", description: "With social media anyone can build a brand...", author: { name: 'Anthony Adams', role: 'Editor & Writer' }, date: "TODAY", views: "12.7k", likes: 14, image: "assets/thumb3.png" },
   { id: 4, title: "3 non-Latin script languages I found the easiest", description: "Learning languages expands the mind...", author: { name: 'Sarah Jackson', role: 'Editor & Writer' }, date: "TODAY", views: "10.9k", likes: 9, image: "assets/thumb4.png" }
+   ,{
+    id:5,
+    title: "Demystifying Blockchain: Was it intentionally made confusing?",
+    description: "For many, the concept of blockchain can seem perplexing and shrouded in mystery...",
+    author: { name: "Benjamin Foster", role: "Editor & Writer" },
+    date: "TODAY",
+    tags: ["Blockchain", "Finance"],
+    views: "1.2M",
+    likes: 94,
+    image: "assets/featured.png"
+  }
 ];
 
 export function initializeDatabase(indexedDbService: IndexedDbService): () => Promise<void> {
