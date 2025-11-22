@@ -19,6 +19,8 @@ export class ArticleDetailsComponent implements OnInit {
     tags: ['Blockchain', 'Technology'],
     date: 'Jun 27, 2024',
     title: 'Demystifying Blockchain: Was it intentionally made confusing?',
+    description: 'For many, the concept of blockchain can seem perplexing and shrouded in mystery. Was it intentionally designed to be this way?',
+    image: 'assets/featured.png',
     author: {
       name: 'Benjamin Foster',
       role: 'Editor & Writer',
