@@ -15,9 +15,9 @@ export class IndexedDbService {
    * If the version is higher than the existing one, onupgradeneeded will be triggered.
    */
   async openDatabase(): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       if (this.db) {
-        resolve();
+        reject('Database not open');
         return;
       }
 
@@ -32,8 +32,8 @@ export class IndexedDbService {
         if (db.objectStoreNames.contains('comments')) {
           db.deleteObjectStore('comments');
         }
-        db.createObjectStore('articles', { keyPath: 'id' });
-        db.createObjectStore('comments', { keyPath: 'id' });
+        db.createObjectStore('articles', { keyPath: 'id',autoIncrement: true });
+        db.createObjectStore('comments', { keyPath: 'id',autoIncrement: true });
         console.log('IndexedDB upgrade complete.');
       };
 

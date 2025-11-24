@@ -67,13 +67,25 @@ export class PostComponent implements AfterViewInit, OnInit {
       return;
     }
 
-    const newPost =  { title:postTitle, description: postContent, category: postCategory,date: "TODAY", views: "0", likes: 0, image: this.thumbnailDataString, author: { name: 'Deepak Singh', role: 'Editor & Writer' },tags: ["Blockchain", "Finance"] };
+    const newPost =  { id: null, title:postTitle, description: postContent, category: postCategory,date: "TODAY", views: "0", likes: 0, image: this.thumbnailDataString, author: { name: 'Deepak Singh', role: 'Editor & Writer' },tags: ["Blockchain", "Finance"] };
 
     try {
-      const id = await this.indexedDbService.add('articles', newPost);
-      console.log('Post added successfully with id:', id);
+      // Create a new object for insertion without the 'id' property to allow auto-increment to work.      
+      const postToAdd = {
+        title: postTitle,
+        description: postContent,
+        category: postCategory,
+        date: "TODAY",
+        views: "0",
+        likes: 0,
+        image: this.thumbnailDataString,
+        author: { name: 'Deepak Singh', role: 'Editor & Writer' },
+        tags: ["Blockchain", "Finance"]
+      };
+      const newId = await this.indexedDbService.add('articles', postToAdd);
+      console.log('Post added successfully with id:', newId);
       alert('Post submitted!');
-    } catch (error) {
+    } catch (error) {      
       console.error('Error adding post', error);
       alert('There was an error submitting your post.');
     }

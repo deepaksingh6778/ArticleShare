@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
-import { IndexedDbService } from '../indexed-db.service';
+import { DbService } from '../db.service';
 
 @Component({
   selector: 'app-home',
@@ -13,13 +13,14 @@ import { IndexedDbService } from '../indexed-db.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private indexedDbService: IndexedDbService, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private dbService: DbService, private cdr: ChangeDetectorRef) {}
 
   articles: any[] = [];
   featuredArticle: any = null;
 
   async ngOnInit() {
-    const articlesFromDb = await this.indexedDbService.getAll('articles');
+    await this.dbService.seedDefaultPosts();
+    const articlesFromDb = await this.dbService.getAllItems();
     if (articlesFromDb && articlesFromDb.length > 0) {
       this.articles = articlesFromDb;
       this.featuredArticle = this.articles[this.articles.length - 1];
