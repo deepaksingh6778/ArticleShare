@@ -28,8 +28,8 @@
     <input type="file" accept="image/*" (change)="onThumbnailSelected($event)">
     
     <img 
-      *ngIf="thumbnailURL" 
-      [src]="thumbnailURL"
+      *ngIf="thumbnailDataString" 
+      [src]="thumbnailDataString"
       class="thumb-preview"
     />
 
