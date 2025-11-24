@@ -30,9 +30,9 @@ export class ArticleDetailsComponent implements OnInit {
   };
 
   recommended = [
-    { title: 'The Future of Decentralized Finance' },
-    { title: 'Understanding Smart Contracts' },
-    { title: 'How NFTs are Changing the Art World' },
+    { title: 'The Future of Decentralized Finance', image: 'assets/defaultimage.png' },
+    { title: 'Understanding Smart Contracts', image: 'assets/defaultimage.png' },
+    { title: 'How NFTs are Changing the Art World', image: 'assets/defaultimage.png' },
   ];
 
   showComments = true;

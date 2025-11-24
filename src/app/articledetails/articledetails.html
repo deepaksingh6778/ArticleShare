@@ -59,7 +59,6 @@
       <svg width="26" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
       <div>
         <p class="author-name">{{ article.author.name }}</p>
-        <p class="author-role">{{ article.author.role }}</p>
       </div>
     </div>
 
@@ -83,12 +82,14 @@
   </div>
 
   <!-- Hero Image -->
-  <div class="hero-image"></div>
+  <div class="hero-image">
+    <img [src]="article.image" (error)="$event.target.src = 'assets/default.png'" />
+  </div>
 
   <!-- Article Content -->
   <div class="article-content">
 
-   <p>{{ article.description }}</p>
+   <div [innerHTML]="article.description"></div>
 
   </div>
 
@@ -97,7 +98,9 @@
 
   <div class="recommended-grid">
     <div class="rec-card" *ngFor="let item of recommended">
-      <div class="rec-image"></div>
+      <div class="rec-image" >
+        <img [src]="item.image" (error)="$event.target.src = 'assets/default.png'"  />
+      </div>
       <p class="rec-title">{{ item.title }}</p>
     </div>
   </div>

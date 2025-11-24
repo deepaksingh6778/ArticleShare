@@ -53,29 +53,27 @@ export class PostComponent implements AfterViewInit, OnInit {
   }
   async submit() {
     const postTitle = (document.getElementById('postTitle') as HTMLInputElement).value;
-    const postCategory = (document.getElementById('categorySelect') as HTMLSelectElement).value;
+    const categorySelect = document.getElementById('categorySelect') as HTMLSelectElement;
+    const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => option.value);
     const postContent = (document.querySelector('.ql-editor') as HTMLElement).innerHTML;
     const thumbnail = this.thumbnailDataString;
 
-    if (!postTitle || postCategory === 'Select category' || !postContent) {
+    if (!postTitle || selectedCategories.length === 0 || !postContent) {
       alert('Please fill out all fields before submitting.');
       return;
     }
-
-    const newPost =  { id: null, title:postTitle, description: postContent, category: postCategory,date: "TODAY", views: "0", likes: 0, image: this.thumbnailDataString, author: { name: 'Deepak Singh', role: 'Editor & Writer' },tags: ["Blockchain", "Finance"] };
 
     try {
       // Create a new object for insertion without the 'id' property to allow auto-increment to work.      
       const postToAdd = {
         title: postTitle,
         description: postContent,
-        category: postCategory,
         date: "TODAY",
         views: "0",
         likes: 0,
         image: this.thumbnailDataString,
         author: { name: 'Deepak Singh', role: 'Editor & Writer' },
-        tags: ["Blockchain", "Finance"]
+        tags: selectedCategories
       };
       const newId = await this.dbService.addItem(postToAdd);
       console.log('Post added successfully with id:', newId);
