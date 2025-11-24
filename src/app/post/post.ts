@@ -1,5 +1,6 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { IndexedDbService } from '../indexed-db.service';
 import Quill from 'quill';
 
 @Component({
@@ -14,8 +15,10 @@ export class PostComponent implements AfterViewInit, OnInit {
   thumbnailDataString: string | null = null;
   private db: any;
 
-  ngOnInit() {
-    this.initDB();
+  constructor(private indexedDbService: IndexedDbService) {}
+
+  async ngOnInit() {
+    await this.initDB();
   }
 
   ngAfterViewInit() {
@@ -49,26 +52,11 @@ export class PostComponent implements AfterViewInit, OnInit {
     }
   }
 
-  private initDB() {
-    const request = indexedDB.open('articlessharedb', 1);
-
-    request.onupgradeneeded = (event: any) => {
-      this.db = event.target.result;
-      if (!this.db.objectStoreNames.contains('articles')) {
-        this.db.createObjectStore('articles', { keyPath: 'id', autoIncrement: true });
-      }
-    };
-
-    request.onsuccess = (event: any) => {
-      this.db = event.target.result;
-    };
-
-    request.onerror = (event: any) => {
-      console.error('Database error: ', event.target.errorCode);
-    };
+  private async initDB() {
+    await this.indexedDbService.openDatabase();
   }
 
-  submit() {
+  async submit() {
     const postTitle = (document.getElementById('postTitle') as HTMLInputElement).value;
     const postCategory = (document.getElementById('categorySelect') as HTMLSelectElement).value;
     const postContent = (document.querySelector('.ql-editor') as HTMLElement).innerHTML;
@@ -79,23 +67,16 @@ export class PostComponent implements AfterViewInit, OnInit {
       return;
     }
 
-    const transaction = this.db.transaction(['articles'], 'readwrite');
-    const store = transaction.objectStore('articles');
     const newPost =  { title:postTitle, description: postContent, category: postCategory,date: "TODAY", views: "0", likes: 0, image: this.thumbnailDataString, author: { name: 'Deepak Singh', role: 'Editor & Writer' },tags: ["Blockchain", "Finance"] };
 
-    //const newPost = { title, category, content, thumbnail };
-
-    const request = store.add(newPost);
-
-    request.onsuccess = () => {
-      console.log('Post added successfully', request.result);
+    try {
+      const id = await this.indexedDbService.add('articles', newPost);
+      console.log('Post added successfully with id:', id);
       alert('Post submitted!');
-    };
-
-    request.onerror = () => {
-      console.error('Error adding post', request.error);
+    } catch (error) {
+      console.error('Error adding post', error);
       alert('There was an error submitting your post.');
-    };
+    }
   }
   
    goBack() {
