@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
@@ -15,7 +15,7 @@ import { UserService } from '../user.service';
 export class ArticleDetailsComponent implements OnInit {
   [x: string]: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService, private cdr: ChangeDetectorRef) {}
 
   article = {
     id: 1, // Added ID for IndexedDB
@@ -141,6 +141,7 @@ export class ArticleDetailsComponent implements OnInit {
   cancelReply() {
     this.replyingToCommentId = null;
     this.newReplyText = '';
+    this.cdr.detectChanges();
   }
 
   async postReply(parentCommentId: number, replyToId?: number) {

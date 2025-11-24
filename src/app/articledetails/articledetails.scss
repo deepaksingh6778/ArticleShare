@@ -270,6 +270,16 @@
     border-radius: 6px;
     cursor: pointer;
   }
+
+   .cancel-btn {
+    background: #888; // A different background for secondary action
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-left: 8px; // Add some space between the buttons
+  }
 }
 
 /* Sorting */
