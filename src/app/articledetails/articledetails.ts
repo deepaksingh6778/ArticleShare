@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
-import { IndexedDbService } from '../indexed-db.service';
+import { DbService } from '../db.service';
 
 @Component({
   selector: 'app-articledetails',
@@ -12,7 +12,7 @@ import { IndexedDbService } from '../indexed-db.service';
 })
 export class ArticleDetailsComponent implements OnInit {
 
-  constructor(private router: Router, private route: ActivatedRoute, private indexedDbService: IndexedDbService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService) {}
 
   article = {
     id: 1, // Added ID for IndexedDB
@@ -78,28 +78,27 @@ export class ArticleDetailsComponent implements OnInit {
       }
     });
 
-    await this.indexedDbService.openDatabase();
     await this.loadArticleAndComments();
   }
 
   async loadArticleAndComments() {
     // Try to load article from IndexedDB
-    const storedArticle = await this.indexedDbService.get<any>('articles', this.article.id); // Use the article.id from route
+    const storedArticle = await this.dbService.getItem(this.article.id); // Use the article.id from route
     if (storedArticle) {
       this.article = { ...this.article, ...storedArticle };
     } else {
       // If not found, add the default article to IndexedDB
-      await this.indexedDbService.add('articles', this.article);
+      await this.dbService.addItem(this.article);
     }
 
     // Try to load comments from IndexedDB
-    const storedComments = await this.indexedDbService.getAll<any>('comments');
+    const storedComments = await this.dbService.getComments(this.article.id); // Use the article.id from route);
     if (storedComments && storedComments.length > 0) {
       this.comments = storedComments;
     } else {
       // If not found, add the default comments to IndexedDB
       for (const comment of this.comments) {
-        await this.indexedDbService.add('comments', comment);
+        await this.dbService.addItem(comment);
       }
     }
   }

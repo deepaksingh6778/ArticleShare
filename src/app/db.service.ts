@@ -24,13 +24,13 @@ export class DbService {
     //this.seedDefaultUsers();
   }
 
-  async getComments(postId: number): Promise<Array<{ user: string; text: string }>> {
+  async getComments(postId: number): Promise<Array<any>> {
     const db = await this.dbPromise;
     const entry = await db.get('comments', postId);
     return entry && entry.comments ? entry.comments : [];
   }
 
-  async saveComments(postId: number, comments: Array<{ user: string; text: string }>): Promise<void> {
+  async saveComments(postId: number, comments: Array<any>): Promise<void> {
     const db = await this.dbPromise;
     await db.put('comments', { postId, comments });
   }

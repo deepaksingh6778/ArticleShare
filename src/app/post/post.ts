@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IndexedDbService } from '../indexed-db.service';
+import { DbService } from '../db.service';
 import Quill from 'quill';
 
 @Component({
@@ -15,10 +15,10 @@ export class PostComponent implements AfterViewInit, OnInit {
   thumbnailDataString: string | null = null;
   private db: any;
 
-  constructor(private indexedDbService: IndexedDbService) {}
+  constructor(private dbService: DbService) {}
 
   async ngOnInit() {
-    await this.initDB();
+    
   }
 
   ngAfterViewInit() {
@@ -51,11 +51,6 @@ export class PostComponent implements AfterViewInit, OnInit {
       reader.readAsDataURL(file);
     }
   }
-
-  private async initDB() {
-    await this.indexedDbService.openDatabase();
-  }
-
   async submit() {
     const postTitle = (document.getElementById('postTitle') as HTMLInputElement).value;
     const postCategory = (document.getElementById('categorySelect') as HTMLSelectElement).value;
@@ -82,7 +77,7 @@ export class PostComponent implements AfterViewInit, OnInit {
         author: { name: 'Deepak Singh', role: 'Editor & Writer' },
         tags: ["Blockchain", "Finance"]
       };
-      const newId = await this.indexedDbService.add('articles', postToAdd);
+      const newId = await this.dbService.addItem(postToAdd);
       console.log('Post added successfully with id:', newId);
       alert('Post submitted!');
     } catch (error) {      
