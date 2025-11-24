@@ -19,14 +19,10 @@ export class HomeComponent implements OnInit {
   featuredArticle: any = null;
 
   async ngOnInit() {
-    const seededArticles = await this.indexedDbService.getAll('articles');
-    const newArticles = await this.indexedDbService.getAll('posts');
-
-    const allArticles = [...(seededArticles || []), ...(newArticles || [])];
-
-    if (allArticles.length > 0) {
-      this.articles = allArticles;
-      this.featuredArticle = this.articles[allArticles.length - 1];
+    const articlesFromDb = await this.indexedDbService.getAll('articles');
+    if (articlesFromDb && articlesFromDb.length > 0) {
+      this.articles = articlesFromDb;
+      this.featuredArticle = this.articles[this.articles.length - 1];
     }
     this.cdr.detectChanges();
   }

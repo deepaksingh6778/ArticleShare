@@ -54,8 +54,8 @@ export class PostComponent implements AfterViewInit, OnInit {
 
     request.onupgradeneeded = (event: any) => {
       this.db = event.target.result;
-      if (!this.db.objectStoreNames.contains('posts')) {
-        this.db.createObjectStore('posts', { keyPath: 'id', autoIncrement: true });
+      if (!this.db.objectStoreNames.contains('articles')) {
+        this.db.createObjectStore('articles', { keyPath: 'id', autoIncrement: true });
       }
     };
 
@@ -69,19 +69,21 @@ export class PostComponent implements AfterViewInit, OnInit {
   }
 
   submit() {
-    const title = (document.getElementById('postTitle') as HTMLInputElement).value;
-    const category = (document.getElementById('categorySelect') as HTMLSelectElement).value;
-    const content = (document.querySelector('.ql-editor') as HTMLElement).innerHTML;
+    const postTitle = (document.getElementById('postTitle') as HTMLInputElement).value;
+    const postCategory = (document.getElementById('categorySelect') as HTMLSelectElement).value;
+    const postContent = (document.querySelector('.ql-editor') as HTMLElement).innerHTML;
     const thumbnail = this.thumbnailDataString;
 
-    if (!title || category === 'Select category' || !content) {
+    if (!postTitle || postCategory === 'Select category' || !postContent) {
       alert('Please fill out all fields before submitting.');
       return;
     }
 
-    const transaction = this.db.transaction(['posts'], 'readwrite');
-    const store = transaction.objectStore('posts');
-    const newPost = { title, category, content, thumbnail };
+    const transaction = this.db.transaction(['articles'], 'readwrite');
+    const store = transaction.objectStore('articles');
+    const newPost =  { title:postTitle, description: postContent, category: postCategory,date: "TODAY", views: "0", likes: 0, image: this.thumbnailDataString, author: { name: 'Deepak Singh', role: 'Editor & Writer' },tags: ["Blockchain", "Finance"] };
+
+    //const newPost = { title, category, content, thumbnail };
 
     const request = store.add(newPost);
 
