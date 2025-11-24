@@ -124,8 +124,8 @@
   <!-- Add Comment Input -->
   <div class="add-comment">
     <div class="avatar">A</div>
-    <input type="text" placeholder="Write a comment..." />
-    <button class="post-btn">Post</button>
+    <input type="text" placeholder="Write a comment..." [(ngModel)]="newCommentText" />
+    <button class="post-btn" (click)="postComment()">Post</button>
   </div>
 
   <hr />
@@ -146,17 +146,29 @@
 
       <p class="comment-text">{{ c.text }}</p>
 
-      <button class="reply-btn">Reply</button>
+      <button class="reply-btn" (click)="startReply(c.id)">Reply</button>
+
+      <!-- Reply Input -->
+      <div class="add-comment reply-input" *ngIf="replyingToCommentId === c.id">
+        <div class="avatar">A</div>
+        <input type="text" placeholder="Write a reply..." [(ngModel)]="newReplyText" />
+        <button class="post-btn" (click)="postReply(c.id, replyingToCommentId)">Post Reply</button>
+        <button class="cancel-btn" (click)="cancelReply()">Cancel</button>
+      </div>
 
       <!-- Replies -->
-      <div class="reply" *ngFor="let r of c.replies">
-        <div class="reply-header">
-          <strong>{{ r.author }}</strong>
-          <span class="role" *ngIf="r.role">Author</span>
-          <span class="time">{{ r.time }}</span>
+      <div class="replies-container" *ngIf="c.replies && c.replies.length > 0">
+        <div class="reply" *ngFor="let r of c.replies">
+          <div class="comment-header">
+            <strong>{{ r.author }}</strong>
+            <span class="role" *ngIf="r.role">Author</span>
+            <span class="time">{{ r.time }}</span>
+          </div>
+          <p class="comment-text">{{ r.text }}</p>
+          <button class="reply-btn" (click)="startReply(c.id, r.id)">Reply</button>
         </div>
-        <p class="reply-text">{{ r.text }}</p>
       </div>
+
     </div>
 
     <button class="show-more">Show more discussion (4,512)</button>

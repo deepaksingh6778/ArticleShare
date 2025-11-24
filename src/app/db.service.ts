@@ -81,4 +81,10 @@ export class DbService {
     const db = await this.dbPromise;
     return db.delete('items', id);
   }  
+   async updateItem(item: any): Promise<any> {
+    // This is a generic update. The calling function needs to know the store.
+    // For comments, it's better to use a specific method like saveComments.
+    const db = await this.dbPromise;    
+    return db.put('items', item); // put() will update the item if it exists, or add it if it does not.
+  }
 }

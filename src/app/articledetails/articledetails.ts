@@ -1,18 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
 import { DbService } from '../db.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-articledetails',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './articledetails.html',
   styleUrl: './articledetails.scss',
 })
 export class ArticleDetailsComponent implements OnInit {
+  [x: string]: any;
 
-  constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService) {}
+  constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService) {}
 
   article = {
     id: 1, // Added ID for IndexedDB
@@ -35,7 +38,7 @@ export class ArticleDetailsComponent implements OnInit {
     { title: 'How NFTs are Changing the Art World', image: 'assets/defaultimage.png' },
   ];
 
-  showComments = true;
+  showComments = false;
 
   comments = [
     {
@@ -109,5 +112,65 @@ export class ArticleDetailsComponent implements OnInit {
 
   goBack() {
     window.history.back();
+  }
+
+  newCommentText: string = '';
+  newReplyText: string = '';
+  replyingToCommentId: number | null = null;
+
+  async postComment() {
+    if (this.newCommentText.trim()) {
+      const newComment = {
+        id: Date.now(),
+        author: this.userService.getUserName() || 'Guest', // Get user name or default to 'Guest'
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        text: this.newCommentText,
+        replies: [],
+        articleId: this.article.id,
+      };
+      this.comments.push(newComment);
+      await this.dbService.saveComments(this.article.id, this.comments);
+      this.newCommentText = '';
+    }
+  }
+
+  startReply(commentId: number, parentCommentId?: number) {
+    this.replyingToCommentId = commentId;
+  }
+
+  cancelReply() {
+    this.replyingToCommentId = null;
+    this.newReplyText = '';
+  }
+
+  async postReply(parentCommentId: number, replyToId?: number) {
+    if (this.newReplyText.trim()) {
+      const newReply = {
+        id: Date.now(),
+        author: this.userService.getUserName() || 'Guest', // Get user name or default to 'Guest'
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        text: this.newReplyText,
+        replies: [],
+        articleId: this.article.id,
+        parentId: replyToId || parentCommentId, // Use replyToId if it exists, otherwise parentCommentId
+      };
+
+      // Find the parent comment and add the reply
+      const parentComment = this.findComment(this.comments, parentCommentId);
+      if (parentComment) {
+        if (!parentComment.replies) {
+          parentComment.replies = [];
+        }
+        parentComment.replies.push(newReply);
+        await this.dbService.saveComments(this.article.id, this.comments); // Save the whole updated comments array
+      }
+
+      this.cancelReply();
+    }
+  }
+
+  findComment(comments: any[], commentId: number): any {
+    // This is a simple find; a recursive one would be needed for deeper nesting
+    return comments.find(c => c.id === commentId);
   }
 }
