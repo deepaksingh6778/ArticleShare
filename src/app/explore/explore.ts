@@ -24,10 +24,10 @@ export class ExploreComponent {
       title: 'Emotional Well-being: Negative vs. Positive Motivation',
       views: 760
     },
-    {
+    /*{
       title: 'Saving does not equal “smart” personal finance management',
       views: 980
-    },
+    },*/
   ];
 
   authors = [
@@ -47,4 +47,8 @@ export class ExploreComponent {
       views: 300,
     },
   ];
+
+   goBack() {
+    window.history.back();
+  }
 }

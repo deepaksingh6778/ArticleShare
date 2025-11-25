@@ -1,8 +1,10 @@
 .container {
-  width: 70%;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+  padding: 32px;
   font-family: Inter, sans-serif;
+  background-color: white; 
+  min-height: 100vh;
 }
 
 /* ✍️ Header */

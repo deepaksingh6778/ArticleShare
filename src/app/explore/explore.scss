@@ -1,9 +1,43 @@
-.discover-container {
-  padding: 32px;
-  max-width: 1200px;
+.container {
+  max-width: 900px;
   margin: auto;
-  color: #242424;
+  padding: 32px;
   font-family: Inter, sans-serif;
+  background-color: white; 
+  min-height: 100vh;
+}
+
+/* Top Bar */
+.top-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 24px;
+
+  .spacer {
+    flex: 1;
+  }
+}
+
+.icon-btn,
+.avatar-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+
+  svg {
+    stroke: #444;
+    fill: none;
+    stroke-width: 1.7;
+  }
+}
+
+.avatar-btn svg {
+  stroke-width: 1.4;
+}
+
+.back-container {
+  cursor: pointer;
 }
 
 .header {

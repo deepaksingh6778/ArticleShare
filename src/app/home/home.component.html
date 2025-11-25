@@ -18,7 +18,7 @@
 
     <h2 class="featured-title">{{ featuredArticle?.title }}</h2>
 
-    <p class="featured-desc">{{ featuredArticle?.description }}</p>
+    <p class="featured-desc" [innerHTML]="featuredArticle?.description"></p>
 
     <div class="featured-meta">
       <div class="tags">
@@ -48,7 +48,7 @@
     <div class="article-item" *ngFor="let a of articles">
       <div class="article-text">
         <h3><a [routerLink]="['/details', a.id]">{{ a.title }}</a></h3>
-        <p>{{ a.description }}</p>
+        <p [innerHTML]="a.description"></p>
         <div class="stats">
           <span>{{ a.date }}</span>
           <span>👁 {{ a.views }}</span>

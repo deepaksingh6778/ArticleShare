@@ -1,5 +1,48 @@
-<div class="discover-container">
+<div class="container">
 
+  <!-- Top Bar -->
+  <div class="top-bar">
+
+    <!-- Back Button -->
+    <div class="back-container" (click)="goBack()">
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+
+    <!-- White background with black border -->
+    <circle cx="24" cy="24" r="22" fill="white" stroke="black" stroke-width="2"/>
+
+    <!-- Straight left arrow -->
+    <path d="M30 24H18" 
+            stroke="black" 
+            stroke-width="3" 
+            stroke-linecap="round"/>
+
+    <path d="M22 20L18 24L22 28" 
+            stroke="black" 
+            stroke-width="3" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"/>
+    </svg>
+
+    </div>
+
+    <span class="spacer"></span>
+
+    <!-- Notifications -->
+    <button class="icon-btn">
+      <svg width="22" viewBox="0 0 24 24"><path d="M12 22a2 2 0 002-2H10a2 2 0 002 2zm6-6V11a6 6 0 00-4-5.659V4a2 2 0 10-4 0v1.341A6 6 0 006 11v5L4 18v1h16v-1z"/></svg>
+    </button>
+
+    <!-- Avatar -->
+    <button class="avatar-btn">
+      <svg width="30" viewBox="0 0 24 24">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+      </svg>
+    </button>
+
+  </div>
+  
   <!-- Header & Search -->
   <div class="header">
     <h1>Discover</h1>
