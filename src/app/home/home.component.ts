@@ -45,6 +45,9 @@ export class HomeComponent implements OnInit {
     this.sortBy = value;
     // add future sorting logic
   }
+  navigateToExplore() {
+    this.router.navigate(['/explore']);
+  }
 
   navigateToPost() {
     this.router.navigate(['/post']);
