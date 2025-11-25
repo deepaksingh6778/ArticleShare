@@ -106,7 +106,7 @@ export class ExploreComponent implements OnInit {
       this.articleService.getAuthors(this.searchTerm).subscribe(basicAuthors => {
         // Transform basic Author objects (id, name) into ExploreAuthorDisplay objects.
         // Placeholder values are used for properties not available from basic authors.
-        this.authors = basicAuthors.map(author => ({
+        this.authors = basicAuthors.slice(0, 2).map(author => ({
           articleId: 0, // Placeholder: basic author search doesn't link to a specific article
           name: author.name,
           views: 0, // Placeholder
