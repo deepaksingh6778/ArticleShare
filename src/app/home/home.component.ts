@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { ArticleService } from '../article.service';
 import { Article } from '../article.model';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { DbService } from '../db.service';
 
 @Component({
@@ -16,6 +18,12 @@ import { DbService } from '../db.service';
 export class HomeComponent implements OnInit {
 
   constructor(private router: Router, private articleService: ArticleService, private dbService: DbService, private cdr: ChangeDetectorRef) {
+    this.searchSubject.pipe(
+      debounceTime(300), // Wait for 300ms after the last event
+      distinctUntilChanged() // Only emit if the value has changed
+    ).subscribe(() => {
+      this.loadInitialArticles();
+    });
   }
 
   articles: Article[] = [];
@@ -23,6 +31,8 @@ export class HomeComponent implements OnInit {
   page: number = 1;
   allArticlesLoaded: boolean = false;
   sortBy = 'latest';
+  searchTerm: string = '';
+  private searchSubject = new Subject<string>();
 
   async ngOnInit() {
     await this.dbService.seedDefaultPosts();
@@ -35,7 +45,7 @@ export class HomeComponent implements OnInit {
   loadInitialArticles(): void {
     this.page = 1;
     this.allArticlesLoaded = false;
-    this.articleService.getArticles(this.sortBy, this.page, this.pageSize).subscribe(articles => {
+    this.articleService.getArticles(this.sortBy, this.page, this.pageSize, this.searchTerm).subscribe(articles => {
       this.articles = articles;
       if (articles.length < this.pageSize) {
         this.allArticlesLoaded = true;
@@ -56,9 +66,13 @@ export class HomeComponent implements OnInit {
     this.loadInitialArticles();
   }
 
+  onSearchChange(): void {
+    this.searchSubject.next(this.searchTerm);
+  }
+
   loadMore(): void {
     this.page++;
-    this.articleService.getArticles(this.sortBy, this.page, this.pageSize).subscribe(newArticles => {
+    this.articleService.getArticles(this.sortBy, this.page, this.pageSize, this.searchTerm).subscribe(newArticles => {
       if (newArticles.length > 0) {
         this.articles.push(...newArticles);
       }

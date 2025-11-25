@@ -3,7 +3,7 @@
   <!-- ✍️ Header -->
   <div class="header">
     <div class="search-container">
-      <input type="text" placeholder="Search..." class="search-box" />
+      <input type="text" placeholder="Search by keyword or author..." class="search-box" [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" />
     </div>
     <button class="draft-button" (click)="navigateToExplore()">
       <span>Explore Top Authors</span>

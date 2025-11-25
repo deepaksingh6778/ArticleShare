@@ -23,10 +23,21 @@ export class ArticleService {
     );
   }
 
-  getArticles(sortBy: string, page: number, pageSize: number): Observable<Article[]> {
+  getArticles(sortBy: string, page: number, pageSize: number, searchTerm?: string): Observable<Article[]> {
     return from(this.dbService.getAllItems()).pipe(
       map(articles => {
-        let sortedArticles = [...articles];
+        let filteredArticles = [...articles];
+
+        if (searchTerm && searchTerm.trim() !== '') {
+          const lowercasedTerm = searchTerm.toLowerCase();
+          filteredArticles = filteredArticles.filter(article => 
+            article.title.toLowerCase().includes(lowercasedTerm) ||
+            article.description.toLowerCase().includes(lowercasedTerm) ||
+            article.author.name.toLowerCase().includes(lowercasedTerm)
+          );
+        }
+
+        let sortedArticles = filteredArticles;
 
         switch (sortBy) {
           case 'latest':
