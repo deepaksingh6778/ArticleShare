@@ -98,6 +98,11 @@ section {
   gap: 20px;
 }
 
+.card-grid.single-item-grid {
+  grid-template-columns: minmax(230px, 300px); /* One column, max 300px wide */
+  justify-content: left; /* Center the grid item horizontally */
+}
+
 /* Article Cards */
 .article-card {
   background: #fafafa;

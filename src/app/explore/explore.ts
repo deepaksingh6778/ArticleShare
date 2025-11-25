@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms'; // <-- Import FormsModule
 import { ArticleService } from '../article.service';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { Article, Author } from '../article.model';
+import { Article } from '../article.model';
 
 // Define a new interface for authors displayed in the explore component's "Rising authors" section
 // This interface includes properties derived from articles, and potentially 'role' if required by the compiler.

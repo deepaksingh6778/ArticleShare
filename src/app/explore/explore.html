@@ -67,7 +67,7 @@
   <section>
     <h2>Readers' choice</h2>
 
-    <div class="card-grid">
+    <div class="card-grid" [class.single-item-grid]="readersChoice.length === 1">
       <div class="article-card" *ngFor="let item of readersChoice">
         <div class="rec-image">
           <img [src]="item.image" (error)="$event.target.src = 'assets/default.png'"  />
@@ -81,7 +81,7 @@
   <section>
     <h2>Rising authors</h2>
 
-    <div class="card-grid">
+    <div class="card-grid" [class.single-item-grid]="authors.length === 0">
 
       <!-- Social Connect Card -->
       <div class="connect-card">
