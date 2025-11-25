@@ -4,10 +4,7 @@ import { openDB, IDBPDatabase } from 'idb';
 
 @Injectable({ providedIn: 'root' })
 export class DbService {
-  async getUserByEmail(email: string) {
-    const db = await this.dbPromise;
-    return db.get('users', email);
-  }
+  
   private dbPromise: Promise<IDBPDatabase<any>>;
 
   constructor() {
@@ -18,6 +15,23 @@ export class DbService {
         }     
         if (!db.objectStoreNames.contains('comments')) {
           db.createObjectStore('comments', { keyPath: 'postId' });
+        }        
+        if (!db.objectStoreNames.contains('authors')) {
+          db.createObjectStore('authors', { keyPath: 'id', autoIncrement: true });
+    this.dbPromise = openDB('ArticleShare-db', 4, {
+      upgrade(db, oldVersion, newVersion, transaction) {
+        switch (oldVersion) {
+          case 0:
+            // Database is being created for the first time
+            db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
+          case 1:
+            // Upgrade from version 1 to 2
+          case 2:
+            // Upgrade from version 2 to 3
+            db.createObjectStore('comments', { keyPath: 'postId' });
+          case 3:
+            // Upgrade from version 3 to 4
+            db.createObjectStore('authors', { keyPath: 'id', autoIncrement: true });
         }
       },
     });
@@ -35,6 +49,10 @@ export class DbService {
     await db.put('comments', { postId, comments });
   }
 
+  async getAllAuthors() {
+    const db = await this.dbPromise;
+    return db.getAll('authors');
+  }
  
   async seedDefaultPosts() {
     const db = await this.dbPromise;
@@ -59,6 +77,21 @@ export class DbService {
       for (const article of articlesToSeed) {
         await db.add('items', article);
       }      
+    }
+  }
+
+  async seedDefaultAuthors() {
+    const db = await this.dbPromise;
+    const count = await db.count('authors');
+    const defaultAuthors = [
+      { name: 'Alexander Hughes', tag: 'Sci-Fi', views: 300 },
+      { name: 'Christopher Brown', tag: 'Tech', views: 900 },
+      { name: 'Sophia Anderson', tag: 'Fashion', views: 300 },
+    ];
+    if (count === 0) {
+      for (const author of defaultAuthors) {
+        await db.add('authors', author);
+      }
     }
   }
 

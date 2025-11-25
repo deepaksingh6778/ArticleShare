@@ -17,26 +17,11 @@ export class ExploreComponent implements OnInit {
 
   readersChoice: any[] = [];
 
-  authors = [
-    {
-      name: 'Alexander Hughes',
-      tag: 'Sci-Fi',
-      views: 300,
-    },
-    {
-      name: 'Christopher Brown',
-      tag: 'Tech',
-      views: 900,
-    },
-    {
-      name: 'Sophia Anderson',
-      tag: 'Fashion',
-      views: 300,
-    },
-  ];
+  authors : any[] = [];
 
   async ngOnInit() {
     await this.loadReadersChoice();
+    await this.loadTopAuthors();
   }
 
   async loadReadersChoice() {
@@ -45,6 +30,18 @@ export class ExploreComponent implements OnInit {
       allArticles.sort((a, b) => this.parseViews(b.views) - this.parseViews(a.views));
       this.readersChoice = allArticles.slice(0, 3);
       this.cdr.markForCheck(); // Manually trigger change detection
+    }
+  }
+
+  async loadTopAuthors() {
+    // Assuming you have a method to get authors, otherwise we use the seeded data.
+    const allAuthors = await this.dbService.getAllAuthors();
+    console.log('All Authors:', allAuthors);
+    if (allAuthors && allAuthors.length > 0) {
+      // Sort by views in descending order
+      allAuthors.sort((a, b) => this.parseViews(b.views) - this.parseViews(a.views));
+      this.authors = allAuthors.slice(0, 3);
+      this.cdr.markForCheck();
     }
   }
 

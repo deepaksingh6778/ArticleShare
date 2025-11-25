@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     await this.dbService.seedDefaultPosts();
+    await this.dbService.seedDefaultAuthors();
     await this.loadArticles();
   }
 
