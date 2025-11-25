@@ -105,7 +105,7 @@
         <h3>{{ author.name }}</h3>
         <p class="views">{{ author.views }}+ views</p>
 
-        <button class="visit-btn">Visit</button>
+        <button class="visit-btn" (click)="navigateToArticleDetails(author.articleId)">Visit</button>
       </div>
 
     </div>

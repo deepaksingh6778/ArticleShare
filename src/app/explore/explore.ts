@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DbService } from '../db.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-explore',
@@ -11,7 +12,7 @@ import { DbService } from '../db.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ExploreComponent implements OnInit {
-  constructor(private dbService: DbService, private cdr: ChangeDetectorRef) {}
+  constructor(private dbService: DbService, private cdr: ChangeDetectorRef, private router: Router) {}
 
   trending = ['Everything Explained', 'Tech Reads', 'Family Therapy'];
 
@@ -44,12 +45,19 @@ export class ExploreComponent implements OnInit {
 
       // Construct the new authors array with article views and tags
       this.authors = topArticles.map(article => ({ //
+        articleId: article.id, // Assuming 'id' is the unique identifier for the article
         name: article.author.name, // Author name from the article
         views: this.parseViews(article.views), // Parsed views from the article
         tag: article.tags[0] || [], // Tags from the article, default to empty array if undefined
       }));
 
       this.cdr.markForCheck(); //
+    }
+  }
+
+  navigateToArticleDetails(articleId: string) {
+    if (articleId) {
+      this.router.navigate(['/details', articleId]);
     }
   }
 
