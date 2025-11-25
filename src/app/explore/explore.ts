@@ -34,14 +34,22 @@ export class ExploreComponent implements OnInit {
   }
 
   async loadTopAuthors() {
-    // Assuming you have a method to get authors, otherwise we use the seeded data.
-    const allAuthors = await this.dbService.getAllAuthors();
-    console.log('All Authors:', allAuthors);
-    if (allAuthors && allAuthors.length > 0) {
-      // Sort by views in descending order
-      allAuthors.sort((a, b) => this.parseViews(b.views) - this.parseViews(a.views));
-      this.authors = allAuthors.slice(0, 3);
-      this.cdr.markForCheck();
+    const allArticles = await this.dbService.getAllItems(); //
+    if (allArticles && allArticles.length > 0) { //
+      // Sort all articles by views in descending order
+      allArticles.sort((a, b) => this.parseViews(b.views) - this.parseViews(a.views)); //
+
+      // Get the top 2 articles
+      const topArticles = allArticles.slice(0, 2); //
+
+      // Construct the new authors array with article views and tags
+      this.authors = topArticles.map(article => ({ //
+        name: article.author.name, // Author name from the article
+        views: this.parseViews(article.views), // Parsed views from the article
+        tag: article.tags[0] || [], // Tags from the article, default to empty array if undefined
+      }));
+
+      this.cdr.markForCheck(); //
     }
   }
 

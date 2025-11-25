@@ -70,6 +70,7 @@ export class DbService {
       { name: 'Alexander Hughes', tag: 'Sci-Fi', views: 300 },
       { name: 'Christopher Brown', tag: 'Tech', views: 900 },
       { name: 'Sophia Anderson', tag: 'Fashion', views: 300 },
+      { name: 'Deepak Singh', tag: 'Tech', views: 350 }
     ];
     if (count === 0) {
       for (const author of defaultAuthors) {
