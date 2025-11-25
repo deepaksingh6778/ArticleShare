@@ -69,10 +69,12 @@
 
     <div class="card-grid">
       <div class="article-card" *ngFor="let item of readersChoice">
-        <div class="img-placeholder"></div>
+        <div class="rec-image">
+          <img [src]="item.image" (error)="$event.target.src = 'assets/default.png'"  />
+        </div>
         <p class="title">{{ item.title }}</p>
       </div>
-    </div>
+    </div>       
   </section>
 
   <!-- Rising authors -->
