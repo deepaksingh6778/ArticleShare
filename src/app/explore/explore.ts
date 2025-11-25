@@ -99,7 +99,6 @@ export class ExploreComponent implements OnInit {
     if (this.searchType === 'articles') {
       this.articleService.getArticles('latest', 1, 10, this.searchTerm).subscribe(articles => {
         this.readersChoice = articles.slice(0, 3); // Limit to a maximum of 3 articles
-        this.authors = []; // Clear authors when searching for articles
         this.cdr.markForCheck();
       });
     } else { // searchType === 'authors'
@@ -113,7 +112,6 @@ export class ExploreComponent implements OnInit {
           tag: 'General', // Placeholder
           // role: 'Author', // Placeholder if 'role' is truly required
         }));
-        this.readersChoice = []; // Clear articles when searching for authors
         this.cdr.markForCheck();
       });
     }
