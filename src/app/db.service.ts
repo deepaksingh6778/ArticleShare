@@ -8,34 +8,17 @@ export class DbService {
   private dbPromise: Promise<IDBPDatabase<any>>;
 
   constructor() {
-    this.dbPromise = openDB('ArticleShare-db', 3, {
-      upgrade(db, oldVersion, newVersion) {
-        if (!db.objectStoreNames.contains('items')) {
-          db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
-        }     
-        if (!db.objectStoreNames.contains('comments')) {
-          db.createObjectStore('comments', { keyPath: 'postId' });
-        }        
-        if (!db.objectStoreNames.contains('authors')) {
-          db.createObjectStore('authors', { keyPath: 'id', autoIncrement: true });
-    this.dbPromise = openDB('ArticleShare-db', 4, {
+    this.dbPromise = openDB('ArticleShare-db', 1, {
       upgrade(db, oldVersion, newVersion, transaction) {
-        switch (oldVersion) {
-          case 0:
-            // Database is being created for the first time
-            db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
-          case 1:
-            // Upgrade from version 1 to 2
-          case 2:
-            // Upgrade from version 2 to 3
-            db.createObjectStore('comments', { keyPath: 'postId' });
-          case 3:
-            // Upgrade from version 3 to 4
-            db.createObjectStore('authors', { keyPath: 'id', autoIncrement: true });
+        // This runs if the database doesn't exist or the version is lower than 1.
+        if (oldVersion < 1) {
+          // Create all object stores for the initial version.
+          db.createObjectStore('items', { keyPath: 'id', autoIncrement: true });
+          db.createObjectStore('comments', { keyPath: 'postId' });
+          db.createObjectStore('authors', { keyPath: 'id', autoIncrement: true });
         }
       },
     });
-    //this.seedDefaultUsers();
   }
 
   async getComments(postId: number): Promise<Array<any>> {
