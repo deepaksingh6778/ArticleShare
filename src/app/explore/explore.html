@@ -49,11 +49,11 @@
     <p>Step into a new zone, join a new conversation.</p>
 
     <div class="search-row">
-      <input type="text" placeholder="Search..." />
+      <input type="text" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" />
 
-      <select>
-        <option>Articles</option>
-        <option>Authors</option>
+      <select [(ngModel)]="searchType" (change)="onSearchChange()">
+        <option value="articles">Articles</option>
+        <option value="authors">Authors</option>
       </select>
     </div>
 

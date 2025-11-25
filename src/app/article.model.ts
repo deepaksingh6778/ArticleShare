@@ -1,6 +1,8 @@
 export interface Author {
     name: string;
-    role: string;   
+    role: string;  
+    tag: string;
+    views: number;
   }
   
   export interface Article {

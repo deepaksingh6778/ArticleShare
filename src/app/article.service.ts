@@ -63,4 +63,19 @@ export class ArticleService {
       })
     );
   }
+
+  getAuthors(searchTerm?: string): Observable<any[]> {
+    return from(this.dbService.getAllAuthors()).pipe(
+      map(authors => {
+        if (!searchTerm || searchTerm.trim() === '') {
+          return authors;
+        }
+
+        const lowercasedTerm = searchTerm.toLowerCase();
+        return authors.filter(author =>
+          author.name.toLowerCase().includes(lowercasedTerm)
+        );
+      })
+    );
+  }
 }
