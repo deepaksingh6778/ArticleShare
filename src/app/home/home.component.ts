@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { DbService } from '../db.service';
 
 @Component({
@@ -13,16 +13,26 @@ import { DbService } from '../db.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private router: Router, private dbService: DbService, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private dbService: DbService, private cdr: ChangeDetectorRef) {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd && (event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home')) {
+        this.loadArticles();
+      }
+    });
+  }
 
   articles: any[] = [];
   featuredArticle: any = null;
 
   async ngOnInit() {
     await this.dbService.seedDefaultPosts();
+    await this.loadArticles();
+  }
+
+  async loadArticles() {
     const articlesFromDb = await this.dbService.getAllItems();
     if (articlesFromDb && articlesFromDb.length > 0) {
-      this.articles = articlesFromDb;
+      this.articles = articlesFromDb.sort((a, b) => b.id - a.id);
       this.featuredArticle = this.articles[this.articles.length - 1];
     }
     this.cdr.detectChanges();

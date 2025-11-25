@@ -89,14 +89,12 @@ export class ArticleDetailsComponent implements OnInit {
     const storedArticle = await this.dbService.getItem(this.article.id); // Use the article.id from route
 
     if (storedArticle) {
+      console.log('Loaded article from IndexedDB:', storedArticle);
       this.article = { ...this.article, ...storedArticle };
       // Increment views
       this.article.views = this.incrementViews(this.article.views);
-      await this.dbService.addItem(this.article); // Save the updated article
-    } else {
-      // If not found, add the default article to IndexedDB
-      await this.dbService.addItem(this.article);
-    }
+      await this.dbService.updateItem(this.article); // Save the updated article
+    } 
 
     // Try to load comments from IndexedDB
     const storedComments = await this.dbService.getComments(this.article.id); // Use the article.id from route);
