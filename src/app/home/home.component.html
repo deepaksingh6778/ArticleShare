@@ -65,8 +65,8 @@
   </div>
 
   <!-- ⬇ View More -->
-  <div class="see-more">
-    <button>See more ↓</button>
+  <div class="see-more" *ngIf="!allArticlesLoaded">
+    <button (click)="loadMore()">See more ↓</button>
   </div>
 
 </div>
