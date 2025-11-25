@@ -16,17 +16,11 @@ import { DbService } from '../db.service';
 export class HomeComponent implements OnInit {
 
   constructor(private router: Router, private articleService: ArticleService, private dbService: DbService, private cdr: ChangeDetectorRef) {
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd && (event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/home')) {
-        this.loadInitialArticles();
-      }
-    });
   }
 
   articles: Article[] = [];
   featuredArticle: Article | undefined = undefined;
   page: number = 1;
-  pageSize: number = 3;
   allArticlesLoaded: boolean = false;
   sortBy = 'latest';
 
@@ -37,7 +31,8 @@ export class HomeComponent implements OnInit {
     this.loadFeaturedArticle();
   }
 
-   loadInitialArticles(): void {
+  pageSize: number = 3;
+  loadInitialArticles(): void {
     this.page = 1;
     this.allArticlesLoaded = false;
     this.articleService.getArticles(this.sortBy, this.page, this.pageSize).subscribe(articles => {
@@ -45,12 +40,14 @@ export class HomeComponent implements OnInit {
       if (articles.length < this.pageSize) {
         this.allArticlesLoaded = true;
       }
+      this.cdr.detectChanges();
     });
   }
 
-  loadFeaturedArticle(): void {
+  loadFeaturedArticle() : void{
     this.articleService.getFeaturedArticle().subscribe(article => {
       this.featuredArticle = article;
+      this.cdr.detectChanges();
     });
   }
 
@@ -69,6 +66,7 @@ export class HomeComponent implements OnInit {
       if (newArticles.length < this.pageSize) {
         this.allArticlesLoaded = true;
       }
+      this.cdr.detectChanges();
     });
   }
 
