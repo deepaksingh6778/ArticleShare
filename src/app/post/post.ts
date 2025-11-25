@@ -69,7 +69,7 @@ export class PostComponent implements AfterViewInit, OnInit {
         title: postTitle,
         description: postContent,
         date: "TODAY",
-        views: "0",
+        views: 0,
         likes: 0,
         image: this.thumbnailDataString,
         author: { name: 'Deepak Singh', role: 'Editor & Writer' },

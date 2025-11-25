@@ -87,8 +87,12 @@ export class ArticleDetailsComponent implements OnInit {
   async loadArticleAndComments() {
     // Try to load article from IndexedDB
     const storedArticle = await this.dbService.getItem(this.article.id); // Use the article.id from route
+
     if (storedArticle) {
       this.article = { ...this.article, ...storedArticle };
+      // Increment views
+      this.article.views = this.incrementViews(this.article.views);
+      await this.dbService.addItem(this.article); // Save the updated article
     } else {
       // If not found, add the default article to IndexedDB
       await this.dbService.addItem(this.article);
@@ -104,6 +108,25 @@ export class ArticleDetailsComponent implements OnInit {
         await this.dbService.addItem(comment);
       }
     }
+  }
+
+  incrementViews(views: string | number): string {
+    let numViews: number;
+    if (typeof views === 'string') {
+      const value = parseFloat(views.replace(/,/g, ''));
+      if (views.toLowerCase().includes('m')) {
+        numViews = value * 1000000;
+      } else if (views.toLowerCase().includes('k')) {
+        numViews = value * 1000;
+      } else {
+        numViews = value;
+      }
+    } else {
+      numViews = views;
+    }
+
+    numViews++;
+    return numViews.toLocaleString(); // Format with commas
   }
 
   toggleComments() {
