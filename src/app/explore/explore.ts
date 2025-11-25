@@ -86,14 +86,19 @@ export class ExploreComponent implements OnInit {
     }
   }
 
-  onSearchChange(): void {
-    this.searchSubject.next(this.searchTerm);
+  onSearchChange(isFromSelect: boolean = false): void {
+    // If the change is from the select dropdown, perform the search immediately.
+    if (isFromSelect) {
+      this.performSearch();
+    } else {
+      this.searchSubject.next(this.searchTerm);
+    }
   }
 
   performSearch(): void {
     if (this.searchType === 'articles') {
       this.articleService.getArticles('latest', 1, 10, this.searchTerm).subscribe(articles => {
-        this.readersChoice = articles;
+        this.readersChoice = articles.slice(0, 3); // Limit to a maximum of 3 articles
         this.authors = []; // Clear authors when searching for articles
         this.cdr.markForCheck();
       });

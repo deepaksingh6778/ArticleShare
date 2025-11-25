@@ -51,7 +51,7 @@
     <div class="search-row">
       <input type="text" placeholder="Search..." [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" />
 
-      <select [(ngModel)]="searchType" (change)="onSearchChange()">
+      <select [(ngModel)]="searchType" (change)="onSearchChange(true)">
         <option value="articles">Articles</option>
         <option value="authors">Authors</option>
       </select>
