@@ -13,7 +13,6 @@ import { UserService } from '../user.service';
   styleUrl: './articledetails.scss',
 })
 export class ArticleDetailsComponent implements OnInit {
-  [x: string]: any;
   commentCount: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService, private cdr: ChangeDetectorRef) {}
@@ -41,7 +40,11 @@ export class ArticleDetailsComponent implements OnInit {
 
   showComments = false;
 
+  allComments: any[] = [];
   comments: any[] = [];
+  commentsPerPage = 3;
+  currentPage = 0;
+  hasMoreComments = false;
 
   async ngOnInit() {
     // Get the 'id' from the route parameters
@@ -70,10 +73,11 @@ export class ArticleDetailsComponent implements OnInit {
     // Try to load comments from IndexedDB
     const storedComments = await this.dbService.getComments(this.article.id); // Use the article.id from route);
     if (storedComments && storedComments.length > 0) {
-      this.comments = storedComments;
-      this.commentCount = this.comments.length; // Update the comment count
+      this.allComments = storedComments;
+      this.commentCount = this.allComments.length; // Update the comment count
+      this.loadInitialComments();
       this.cdr.detectChanges(); // Trigger change detection
-    } 
+    }
   }
 
   incrementViews(views: string | number): string {
@@ -107,8 +111,8 @@ export class ArticleDetailsComponent implements OnInit {
   newReplyText: string = '';
   replyingToCommentId: number | undefined = undefined;
 
-  async postComment() {
-    if (this.newCommentText.trim()) {
+  async postComment() { 
+    if (this.newCommentText && this.newCommentText.trim() !== '') {
       const newComment = {
         id: Date.now(),
         author: this.userService.getUserName() || 'Guest',
@@ -117,11 +121,12 @@ export class ArticleDetailsComponent implements OnInit {
         replies: [],
         articleId: this.article.id,
       };
-      this.comments.push(newComment);
-      await this.dbService.saveComments(this.article.id, this.comments);
-      this.commentCount = this.comments.length; // Update the comment count
+      this.newCommentText = ''; // Reset the input field immediately
+      this.allComments.unshift(newComment); // Add to the beginning of all comments
+      await this.dbService.saveComments(this.article.id, this.allComments);
+      this.commentCount = this.allComments.length; // Update the comment count
+      this.loadInitialComments(); // Reload comments to apply pagination correctly
       this.cdr.detectChanges(); // Trigger change detection
-      this.newCommentText = '';
     }
   }
 
@@ -154,7 +159,7 @@ export class ArticleDetailsComponent implements OnInit {
           parentComment.replies = [];
         }
         parentComment.replies.push(newReply); 
-        await this.dbService.saveComments(this.article.id, this.comments);
+        await this.dbService.saveComments(this.article.id, this.allComments);
       }
 
       this.cancelReply();
@@ -164,5 +169,21 @@ export class ArticleDetailsComponent implements OnInit {
   findComment(comments: any[], commentId: number): any {
     // This is a simple find; a recursive one would be needed for deeper nesting
     return comments.find(c => c.id === commentId);
+  }
+
+  loadInitialComments() {
+    this.currentPage = 0;
+    this.comments = [];
+    this.loadMoreComments();
+  }
+
+  loadMoreComments() {
+    this.currentPage++;
+    const startIndex = (this.currentPage - 1) * this.commentsPerPage;
+    const endIndex = startIndex + this.commentsPerPage;
+    const newComments = this.allComments.slice(startIndex, endIndex);
+    this.comments.push(...newComments);
+
+    this.hasMoreComments = this.comments.length < this.allComments.length;
   }
 }
