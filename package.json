@@ -6,7 +6,10 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build:gh": "ng build --base-href=/articleshare/",
+    "predeploy": "npm run build:gh && node copy404.js",
+    "deploy": "node copy404.js && npx angular-cli-ghpages --dir=dist/articleshare/browser"
   },
   "private": true,
   "dependencies": {
