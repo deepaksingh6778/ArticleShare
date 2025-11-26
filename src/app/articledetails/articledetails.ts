@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRoute
 import { DbService } from '../db.service';
 import { UserService } from '../user.service';
+import { Article } from '../article.model';
 
 @Component({
   selector: 'app-articledetails',
@@ -17,26 +18,9 @@ export class ArticleDetailsComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService, private cdr: ChangeDetectorRef) {}
 
-  article = {
-    id: 1, // Added ID for IndexedDB
-    tags: ['Blockchain', 'Technology'],
-    date: 'Jun 27, 2024',
-    title: 'Demystifying Blockchain: Was it intentionally made confusing?',
-    description: 'For many, the concept of blockchain can seem perplexing and shrouded in mystery. Was it intentionally designed to be this way?',
-    image: 'assets/featured.png',
-    author: {
-      name: 'Benjamin Foster',
-      role: 'Editor & Writer',
-    },
-    views: '1.8M',
-    likes: '6.4K',
-  };
+  article: Article = {} as Article;
 
-  recommended = [
-    { title: 'The Future of Decentralized Finance', image: 'assets/defaultimage.png' },
-    { title: 'Understanding Smart Contracts', image: 'assets/defaultimage.png' },
-    { title: 'How NFTs are Changing the Art World', image: 'assets/defaultimage.png' },
-  ];
+  recommended: any[] = [];
 
   showComments = false;
 
@@ -51,11 +35,13 @@ export class ArticleDetailsComponent implements OnInit {
     this.route.paramMap.subscribe(async params => {
       const articleId = params.get('id');
       if (articleId) {
+        console.log('Article empty:', this.article);
         this.article.id = parseInt(articleId, 10);
       }
     });
 
     await this.loadArticleAndComments();
+    this.cdr.detectChanges();
   }
 
   async loadArticleAndComments() {
@@ -70,6 +56,23 @@ export class ArticleDetailsComponent implements OnInit {
       await this.dbService.updateItem(this.article); // Save the updated article
     } 
 
+    // Load recommended articles
+    if (this.article && this.article.tags.length > 0) {
+      const primaryTag = this.article.tags[0];
+      const allArticles = await this.dbService.getAllItems(); // Fetch all articles
+
+      const recommendedArticles = allArticles
+        .filter(art => 
+          art.id !== this.article.id && 
+          art.tags && 
+          art.tags.includes(primaryTag)
+        )
+        .sort((a, b) => this.parseMetric(b.views) - this.parseMetric(a.views))
+        .slice(0, 3);
+
+      this.recommended = recommendedArticles;
+    }
+
     // Try to load comments from IndexedDB
     const storedComments = await this.dbService.getComments(this.article.id); // Use the article.id from route);
     if (storedComments && storedComments.length > 0) {
@@ -80,42 +83,26 @@ export class ArticleDetailsComponent implements OnInit {
     }
   }
 
-  incrementViews(views: string | number): string {
-    let numViews: number;
-    if (typeof views === 'string') {
-      const value = parseFloat(views.replace(/,/g, ''));
-      if (views.toLowerCase().includes('m')) {
-        numViews = value * 1000000;
-      } else if (views.toLowerCase().includes('k')) {
-        numViews = value * 1000;
-      } else {
-        numViews = value;
-      }
-    } else {
-      numViews = views;
+  private parseMetric(metric: string | number): number {
+    if (typeof metric === 'number') {
+      return metric;
     }
+    const value = parseFloat(metric.replace(/,/g, ''));
+    if (metric.toLowerCase().includes('m')) {
+      return value * 1000000;
+    } else if (metric.toLowerCase().includes('k')) {
+      return value * 1000;
+    } else {
+      return value;
+    }
+  }
 
-    numViews++;
-    return numViews.toLocaleString(); // Format with commas
+  incrementViews(views: string | number): number {
+    return (this.parseMetric(views) + 1);
   }
 
   async incrementLikes() {
-    let numLikes: number;
-    if (typeof this.article.likes === 'string') {
-      const value = parseFloat(this.article.likes.replace(/,/g, ''));
-      if (this.article.likes.toLowerCase().includes('m')) {
-        numLikes = value * 1000000;
-      } else if (this.article.likes.toLowerCase().includes('k')) {
-        numLikes = value * 1000;
-      } else {
-        numLikes = value;
-      }
-    } else {
-      numLikes = this.article.likes;
-    }
-
-    numLikes++;
-    this.article.likes = numLikes.toLocaleString();
+    this.article.likes = (this.parseMetric(this.article.likes) + 1);
 
     await this.dbService.updateItem(this.article);
   }
