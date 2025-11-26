@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const distPath = path.join(__dirname, 'dist', 'articleshare', 'browser');
+const distPath = path.join(__dirname, 'dist', 'ArticleShare', 'browser');
 const indexFile = path.join(distPath, 'index.html');
 const notFoundFile = path.join(distPath, '404.html');
 
