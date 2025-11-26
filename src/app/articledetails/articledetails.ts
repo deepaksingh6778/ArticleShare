@@ -14,6 +14,7 @@ import { UserService } from '../user.service';
 })
 export class ArticleDetailsComponent implements OnInit {
   [x: string]: any;
+  commentCount: number = 0;
 
   constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService, private cdr: ChangeDetectorRef) {}
 
@@ -40,37 +41,7 @@ export class ArticleDetailsComponent implements OnInit {
 
   showComments = false;
 
-  comments = [
-    {
-      id: 1, // Added ID for IndexedDB
-      author: 'Anna',
-      time: '12:03 PM',
-      text: 'Ut in ad laborum minim aliqua mollit proident enim adipiscing...',
-      replies: [],
-    },
-    {
-      id: 2, // Added ID for IndexedDB
-      author: 'John',
-      time: '08:10 AM',
-      text: 'Id ullamco qui tempor consectetur fugiat magna officia eiusmod...',
-      replies: [
-        {
-          id: 1, // Added ID for IndexedDB
-          author: 'Benjamin Foster',
-          time: '08:20 AM',
-          role: 'Author',
-          text: 'Ipsum anim est consequat commodo reprehenderit mollit enim...',
-        },
-      ],
-    },
-    {
-      id: 3, // Added ID for IndexedDB
-      author: 'Lisa',
-      time: '10:50 AM',
-      text: 'Anim aute ea ad dolore et enim aute duis laboris officia...',
-      replies: [],
-    },
-  ];
+  comments: any[] = [];
 
   async ngOnInit() {
     // Get the 'id' from the route parameters
@@ -100,12 +71,9 @@ export class ArticleDetailsComponent implements OnInit {
     const storedComments = await this.dbService.getComments(this.article.id); // Use the article.id from route);
     if (storedComments && storedComments.length > 0) {
       this.comments = storedComments;
-    } else {
-      // If not found, add the default comments to IndexedDB
-      for (const comment of this.comments) {
-        await this.dbService.addItem(comment);
-      }
-    }
+      this.commentCount = this.comments.length; // Update the comment count
+      this.cdr.detectChanges(); // Trigger change detection
+    } 
   }
 
   incrementViews(views: string | number): string {
@@ -137,13 +105,13 @@ export class ArticleDetailsComponent implements OnInit {
 
   newCommentText: string = '';
   newReplyText: string = '';
-  replyingToCommentId: number | null = null;
+  replyingToCommentId: number | undefined = undefined;
 
   async postComment() {
     if (this.newCommentText.trim()) {
       const newComment = {
         id: Date.now(),
-        author: this.userService.getUserName() || 'Guest', // Get user name or default to 'Guest'
+        author: this.userService.getUserName() || 'Guest',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         text: this.newCommentText,
         replies: [],
@@ -151,6 +119,8 @@ export class ArticleDetailsComponent implements OnInit {
       };
       this.comments.push(newComment);
       await this.dbService.saveComments(this.article.id, this.comments);
+      this.commentCount = this.comments.length; // Update the comment count
+      this.cdr.detectChanges(); // Trigger change detection
       this.newCommentText = '';
     }
   }
@@ -160,7 +130,7 @@ export class ArticleDetailsComponent implements OnInit {
   }
 
   cancelReply() {
-    this.replyingToCommentId = null;
+    this.replyingToCommentId = undefined;
     this.newReplyText = '';
     this.cdr.detectChanges();
   }
@@ -169,12 +139,12 @@ export class ArticleDetailsComponent implements OnInit {
     if (this.newReplyText.trim()) {
       const newReply = {
         id: Date.now(),
-        author: this.userService.getUserName() || 'Guest', // Get user name or default to 'Guest'
+        author: this.userService.getUserName() || 'Guest',
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         text: this.newReplyText,
         replies: [],
         articleId: this.article.id,
-        parentId: replyToId || parentCommentId, // Use replyToId if it exists, otherwise parentCommentId
+        parentId: replyToId || parentCommentId,
       };
 
       // Find the parent comment and add the reply
@@ -183,8 +153,8 @@ export class ArticleDetailsComponent implements OnInit {
         if (!parentComment.replies) {
           parentComment.replies = [];
         }
-        parentComment.replies.push(newReply);
-        await this.dbService.saveComments(this.article.id, this.comments); // Save the whole updated comments array
+        parentComment.replies.push(newReply); 
+        await this.dbService.saveComments(this.article.id, this.comments);
       }
 
       this.cancelReply();
