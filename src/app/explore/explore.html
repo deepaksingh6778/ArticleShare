@@ -69,7 +69,7 @@
 
     <div class="card-grid" [class.single-item-grid]="readersChoice.length === 1">
       <div class="article-card" *ngFor="let item of readersChoice">
-        <div class="rec-image">
+        <div class="rec-image" (click)="navigateToArticleDetails(item.id)" style="cursor: pointer;">
           <img [src]="item.image" (error)="$event.target.src = 'assets/default.png'"  />
         </div>
         <p class="title">{{ item.title }}</p>

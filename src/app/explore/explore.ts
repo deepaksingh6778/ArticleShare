@@ -44,7 +44,7 @@ export class ExploreComponent implements OnInit {
     });
   }
 
-  trending: string[] = ['design', 'tech', 'crypto'];
+  trending: string[] = [];
   readersChoice: Article[] = [];
   authors: ExploreAuthorDisplay[] = []; // Changed type to ExploreAuthorDisplay[]
 
@@ -61,8 +61,16 @@ export class ExploreComponent implements OnInit {
   loadInitialData(): void {
     this.articleService.getArticles('popular', 1, 3).subscribe(articles => {
       this.readersChoice = articles;
+      if (this.readersChoice && this.readersChoice.length > 0) {
+      // Use flatMap to get an array of all tags from all articles
+      const allTags = this.readersChoice.flatMap(article => article.tags);
+
+      // Use a Set to get only the unique tags, then convert it back to an array
+      this.trending = [...new Set(allTags)];
+    }
       this.cdr.markForCheck();
     });
+
     // Populate the initial "Rising authors" section using loadTopAuthors
     this.loadTopAuthors();
   }
