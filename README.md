@@ -18,8 +18,11 @@ A SPA Angular web app to develop an online publishing platform that facilitates 
   
 2. **Login** Login with social authentication using Auth0 .  
 3. **Create a Post** using the “Draft an article” option.  
-4. Once created, your post will appear on the **Home Screen**:
-   - In the **Listings** section  
+4. Once created, your post will appear on the **Home Screen**,in the **Listings** section  
+5. Click any Item in the list , to open details
+6. On details screen, you can add comments
+7. Search articles on Home page
+8. Search Authors on Explore screen 
 
 ---
 

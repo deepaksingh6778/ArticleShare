@@ -30,7 +30,7 @@
   padding: 6px;
 
   svg {
-    stroke: #444;
+    stroke: #000;
     fill: none;
     stroke-width: 1.7;
   }
@@ -64,7 +64,7 @@
 
   .date {
     margin: 0;
-    color: #777;
+    color: #333;
   }
 
   h1 {
@@ -81,7 +81,7 @@
     margin-top: 12px;
 
     svg {
-      stroke: #333;
+      stroke: #000;
       fill: none;
       stroke-width: 1.5;
     }
@@ -100,7 +100,7 @@
     display: flex;
     gap: 24px;
     margin-top: 20px;
-    color: #555;
+    color: #000;
     font-size: 14px;
 
     div {

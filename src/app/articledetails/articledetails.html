@@ -63,19 +63,27 @@
     </div>
 
     <!-- Stats -->
-    <div class="stats-row">
+    <div class="stats-row" title="views">
       <div>
         <svg width="20" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg>
         {{ article.views }}
       </div>
 
-      <div (click)="incrementLikes()">
+      <div (click)="incrementLikes()" title="Likes">
         <svg width="20" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5a5.5 5.5 0 0111 0 5.5 5.5 0 0111 0c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
         {{ article.likes }}
       </div>
 
-      <div (click)="toggleComments()">
-        <svg width="22" viewBox="0 0 24 24"><path d="M6 4h12v17l-6-4-6 4z"/></svg>
+      <div (click)="toggleComments()" title="Comments">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="25" fill="none">
+          <!-- Left bubble -->
+          <path d="M4 6h14c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2H10l-4 4v-4H4c-1.1 0-2-.9-2-2V8c0-1.1.9-2 2-2z"
+                stroke="black" stroke-width="1.8" stroke-linejoin="round"/>
+
+          <!-- Right bubble -->
+          <path d="M28 10H14c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h6l4 4v-4h4c1.1 0 2-.9 2-2v-8c0-1.1-.9-2-2-2z"
+                stroke="black" stroke-width="1.8" stroke-linejoin="round"/>
+        </svg>
       </div> 
     </div>
 

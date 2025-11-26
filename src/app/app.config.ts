@@ -1,9 +1,10 @@
 import { APP_INITIALIZER, ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter,withHashLocation} from '@angular/router';
 import { provideAuth0 } from '@auth0/auth0-angular';
-import { DbService } from './db.service';
 
 import { routes } from './app.routes';
+import { environment } from './../environments/environment';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,14 +12,12 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(routes, withHashLocation()),   
     provideAuth0({
-      domain: 'dev-auf10bctliijewyd.us.auth0.com', // Replace with your Auth0 Domain
-      clientId: 'uExvmCJ4qs4TqVIZOYjjKqJgCOD2LnL4', // Replace with your Auth0 Client ID
+      domain: 'dev-auf10bctliijewyd.us.auth0.com',
+      clientId: 'uExvmCJ4qs4TqVIZOYjjKqJgCOD2LnL4',
       authorizationParams: {
-        redirect_uri: `https://deepaksingh6778.github.io/ArticleShare/#/callback`,
+        redirect_uri: environment.auth0.redirectUri,
         scope: 'openid profile email' 
       }
     })
   ]
 };
-
-
