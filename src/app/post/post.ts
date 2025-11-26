@@ -1,6 +1,7 @@
 import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DbService } from '../db.service';
+import { UserService } from '../user.service';
 import Quill from 'quill';
 
 @Component({
@@ -15,7 +16,7 @@ export class PostComponent implements AfterViewInit, OnInit {
   thumbnailDataString: string | null = null;
   private db: any;
 
-  constructor(private dbService: DbService) {}
+  constructor(private dbService: DbService,private userService: UserService) {}
 
   async ngOnInit() {
     
@@ -72,7 +73,7 @@ export class PostComponent implements AfterViewInit, OnInit {
         views: 0,
         likes: 0,
         image: this.thumbnailDataString,
-        author: { name: 'Deepak Singh', role: 'Editor & Writer' },
+        author: { name: this.userService.getUserName() || 'Guest', role: 'Editor & Writer' },
         tags: selectedCategories
       };
       const newId = await this.dbService.addItem(postToAdd);
