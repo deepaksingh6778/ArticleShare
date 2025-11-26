@@ -99,6 +99,27 @@ export class ArticleDetailsComponent implements OnInit {
     return numViews.toLocaleString(); // Format with commas
   }
 
+  async incrementLikes() {
+    let numLikes: number;
+    if (typeof this.article.likes === 'string') {
+      const value = parseFloat(this.article.likes.replace(/,/g, ''));
+      if (this.article.likes.toLowerCase().includes('m')) {
+        numLikes = value * 1000000;
+      } else if (this.article.likes.toLowerCase().includes('k')) {
+        numLikes = value * 1000;
+      } else {
+        numLikes = value;
+      }
+    } else {
+      numLikes = this.article.likes;
+    }
+
+    numLikes++;
+    this.article.likes = numLikes.toLocaleString();
+
+    await this.dbService.updateItem(this.article);
+  }
+
   toggleComments() {
     this.showComments = !this.showComments;
   }
