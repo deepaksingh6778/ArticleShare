@@ -98,7 +98,7 @@
 
   <div class="recommended-grid">
     <div class="rec-card" *ngFor="let item of recommended">
-      <div class="rec-image" >
+      <div class="rec-image" (click)="navigateToArticleDetails(item.id)" style="cursor: pointer;">
         <img [src]="item.image" (error)="$event.target.src = 'assets/default.png'"  />
       </div>
       <p class="rec-title">{{ item.title }}</p>

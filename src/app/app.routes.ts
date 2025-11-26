@@ -18,16 +18,19 @@ export const routes: Routes = [
     path: 'post',
     component: PostComponent,
     pathMatch: 'full',
+    canActivate: [AuthGuard]
   },
   {
     path: 'details/:id',
     component: ArticleDetailsComponent,
     pathMatch: 'full',
+    canActivate: [AuthGuard]
   },
   {
     path: 'explore',
     component: ExploreComponent,
     pathMatch: 'full',
+    canActivate: [AuthGuard]
   },
   { 
     path: "callback", 

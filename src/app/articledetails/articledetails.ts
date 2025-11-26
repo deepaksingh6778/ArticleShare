@@ -115,6 +115,10 @@ export class ArticleDetailsComponent implements OnInit {
     window.history.back();
   }
 
+  navigateToArticleDetails(id: number) {
+    this.router.navigate(['/details', id]);
+  }
+  
   newCommentText: string = '';
   newReplyText: string = '';
   replyingToCommentId: number | undefined = undefined;
