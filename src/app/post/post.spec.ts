@@ -43,6 +43,8 @@ describe('PostComponent', () => {
       // Since we refactored the component, we no longer need to create mock DOM elements.
       // We can interact with the component's properties directly.
       spyOn(document, 'querySelector').and.returnValue({ innerHTML: '' } as HTMLElement);
+        return document.createElement('div'); // default mock
+      });
 
       alertSpy = spyOn(window, 'alert');
       userServiceSpy.getUserName.and.returnValue('Test User');
@@ -56,7 +58,12 @@ describe('PostComponent', () => {
 
     it('should call dbService.addItem with the correct post data on successful submission', async () => {
       component.postTitle = 'Test Title';
+      // This property will be used by our mock of getElementById
       component.selectedCategories = ['Technology'];
+      (document.getElementById as jasmine.Spy).withArgs('categorySelect').and.returnValue({
+        selectedOptions: component.selectedCategories.map(val => ({ value: val }))
+      });
+
       // Mock the return value for the one remaining querySelector call
       (document.querySelector as jasmine.Spy).and.returnValue({ innerHTML: '<p>Test Content</p>' });
 
@@ -83,6 +90,10 @@ describe('PostComponent', () => {
     it('should show an error alert if addItem fails', async () => {
       component.postTitle = 'Test Title';
       component.selectedCategories = ['Technology'];
+      (document.getElementById as jasmine.Spy).withArgs('categorySelect').and.returnValue({
+        selectedOptions: component.selectedCategories.map(val => ({ value: val }))
+      });
+
       // Mock the return value for the one remaining querySelector call
       (document.querySelector as jasmine.Spy).and.returnValue({ innerHTML: '<p>Test Content</p>' });
 
