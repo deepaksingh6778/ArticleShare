@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router'; // Import ActivatedRou
 import { DbService } from '../db.service';
 import { UserService } from '../user.service';
 import { Article } from '../article.model';
+import { ReadingTimeWorkerService } from '../ReadingTimeWorkerService';
 
 @Component({
   selector: 'app-articledetails',
@@ -15,8 +16,13 @@ import { Article } from '../article.model';
 })
 export class ArticleDetailsComponent implements OnInit {
   commentCount: number = 0;
+  wordCount: number | null = null;
+  readingTime: string | null = null;
 
-  constructor(private router: Router, private route: ActivatedRoute, private dbService: DbService, private userService: UserService, private cdr: ChangeDetectorRef) {}
+  constructor(private router: Router, private route: ActivatedRoute,
+     private dbService: DbService, private userService: UserService, 
+     private readingTimeWorkerService: ReadingTimeWorkerService,     
+     private cdr: ChangeDetectorRef) {}  
 
   article: Article = {} as Article;
 
@@ -51,6 +57,13 @@ export class ArticleDetailsComponent implements OnInit {
     if (storedArticle) {
       console.log('Loaded article from IndexedDB:', storedArticle);
       this.article = { ...this.article, ...storedArticle };
+      this.readingTimeWorkerService.estimateReadingTime(this.article.description)
+      .subscribe(result => {
+        this.wordCount = result.wordCount;
+        this.readingTime = result.readingTime;
+        console.log('Estimated reading time:', this.readingTime);
+        console.log('Word count:', this.wordCount);
+      });
       // Increment views
       this.article.views = this.incrementViews(this.article.views);
       await this.dbService.updateItem(this.article); // Save the updated article
