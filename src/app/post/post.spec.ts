@@ -42,10 +42,9 @@ describe('PostComponent', () => {
     beforeEach(() => {
       // Since we refactored the component, we no longer need to create mock DOM elements.
       // We can interact with the component's properties directly.
-      spyOn(document, 'querySelector').and.returnValue({ innerHTML: '' } as HTMLElement);
-        return document.createElement('div'); // default mock
+      spyOn(document, 'querySelector').and.callFake(() => {
+        return document.createElement('div');
       });
-
       alertSpy = spyOn(window, 'alert');
       userServiceSpy.getUserName.and.returnValue('Test User');
     });
