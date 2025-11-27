@@ -54,6 +54,15 @@ describe('PostComponent', () => {
     });
 
     it('should show an alert if required fields are missing', async () => {
+      // Mock getElementById to return elements with empty values to trigger the validation.
+      (document.getElementById as jasmine.Spy).withArgs('postTitle').and.returnValue({
+        value: ''
+      });
+      (document.getElementById as jasmine.Spy).withArgs('categorySelect').and.returnValue({
+        selectedOptions: []
+      });
+      (document.querySelector as jasmine.Spy).and.returnValue({ innerHTML: '' });
+
       await component.submit();
       expect(alertSpy).toHaveBeenCalledWith('Please fill out all fields before submitting.');
       expect(dbServiceSpy.addItem).not.toHaveBeenCalled();
