@@ -45,6 +45,10 @@ describe('PostComponent', () => {
       spyOn(document, 'querySelector').and.callFake(() => {
         return document.createElement('div');
       });
+      spyOn(document, 'getElementById').and.callFake((id: string) => {
+        // Provide a default mock and allow tests to override with withArgs
+        return null;
+      });
       alertSpy = spyOn(window, 'alert');
       userServiceSpy.getUserName.and.returnValue('Test User');
     });
@@ -58,6 +62,9 @@ describe('PostComponent', () => {
     it('should call dbService.addItem with the correct post data on successful submission', async () => {
       component.postTitle = 'Test Title';
       // This property will be used by our mock of getElementById
+      (document.getElementById as jasmine.Spy).withArgs('postTitle').and.returnValue({
+        value: component.postTitle
+      });
       component.selectedCategories = ['Technology'];
       (document.getElementById as jasmine.Spy).withArgs('categorySelect').and.returnValue({
         selectedOptions: component.selectedCategories.map(val => ({ value: val }))
@@ -88,6 +95,9 @@ describe('PostComponent', () => {
 
     it('should show an error alert if addItem fails', async () => {
       component.postTitle = 'Test Title';
+      (document.getElementById as jasmine.Spy).withArgs('postTitle').and.returnValue({
+        value: component.postTitle
+      });
       component.selectedCategories = ['Technology'];
       (document.getElementById as jasmine.Spy).withArgs('categorySelect').and.returnValue({
         selectedOptions: component.selectedCategories.map(val => ({ value: val }))
