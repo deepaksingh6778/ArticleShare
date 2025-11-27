@@ -1,0 +1,1 @@
+addEventListener("message",({data:s})=>{let n=(s.content||"").split(/\s+/).filter(Boolean).length,e=n/200,t="";e<1?t=`${Math.ceil(e*60)} sec`:t=`${Math.ceil(e)} min`,postMessage({wordCount:n,readingTime:t})});
