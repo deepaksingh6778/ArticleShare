@@ -1,18 +1,31 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Post } from './post';
+import { PostComponent } from './post';
+import { DbService } from '../db.service';
+import { CommonModule } from '@angular/common';
+import { UserService } from '../user.service';
 
-describe('Post', () => {
-  let component: Post;
-  let fixture: ComponentFixture<Post>;
+describe('PostComponent', () => {
+  let component: PostComponent;
+  let fixture: ComponentFixture<PostComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Post]
-    })
-    .compileComponents();
+    const dbServiceSpy = jasmine.createSpyObj('DbService', ['addItem']);
+    const userServiceSpy = jasmine.createSpyObj('UserService', ['getUserName']);
 
-    fixture = TestBed.createComponent(Post);
+    // Prevent Quill from initializing in the test environment
+    spyOn(PostComponent.prototype, 'ngAfterViewInit').and.callFake(() => {});
+
+    TestBed.configureTestingModule({
+      imports: [PostComponent, CommonModule],
+      providers: [
+        { provide: DbService, useValue: dbServiceSpy },
+        { provide: UserService, useValue: userServiceSpy }
+      ]
+    });
+    await TestBed.compileComponents();
+
+    fixture = TestBed.createComponent(PostComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
