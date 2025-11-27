@@ -8,10 +8,12 @@ import { UserService } from '../user.service';
 describe('PostComponent', () => {
   let component: PostComponent;
   let fixture: ComponentFixture<PostComponent>;
+  let dbServiceSpy: jasmine.SpyObj<DbService>;
+  let userServiceSpy: jasmine.SpyObj<UserService>;
 
   beforeEach(async () => {
-    const dbServiceSpy = jasmine.createSpyObj('DbService', ['addItem']);
-    const userServiceSpy = jasmine.createSpyObj('UserService', ['getUserName']);
+    dbServiceSpy = jasmine.createSpyObj('DbService', ['addItem']);
+    userServiceSpy = jasmine.createSpyObj('UserService', ['getUserName']);
 
     // Prevent Quill from initializing in the test environment
     spyOn(PostComponent.prototype, 'ngAfterViewInit').and.callFake(() => {});
@@ -32,5 +34,66 @@ describe('PostComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('submit', () => {
+    let alertSpy: jasmine.Spy;
+
+    beforeEach(() => {
+      // Since we refactored the component, we no longer need to create mock DOM elements.
+      // We can interact with the component's properties directly.
+      spyOn(document, 'querySelector').and.returnValue({ innerHTML: '' } as HTMLElement);
+
+      alertSpy = spyOn(window, 'alert');
+      userServiceSpy.getUserName.and.returnValue('Test User');
+    });
+
+    it('should show an alert if required fields are missing', async () => {
+      await component.submit();
+      expect(alertSpy).toHaveBeenCalledWith('Please fill out all fields before submitting.');
+      expect(dbServiceSpy.addItem).not.toHaveBeenCalled();
+    });
+
+    it('should call dbService.addItem with the correct post data on successful submission', async () => {
+      component.postTitle = 'Test Title';
+      component.selectedCategories = ['Technology'];
+      // Mock the return value for the one remaining querySelector call
+      (document.querySelector as jasmine.Spy).and.returnValue({ innerHTML: '<p>Test Content</p>' });
+
+      component.thumbnailDataString = 'data:image/png;base64,test';
+      dbServiceSpy.addItem.and.resolveTo(1);
+
+      await component.submit();
+
+      const expectedPost = {
+        title: 'Test Title',
+        description: '<p>Test Content</p>',
+        date: 'TODAY',
+        views: 0,
+        likes: 0,
+        image: 'data:image/png;base64,test',
+        author: { name: 'Test User', role: 'Editor & Writer' },
+        tags: ['Technology']
+      };
+
+      expect(dbServiceSpy.addItem).toHaveBeenCalledWith(expectedPost);
+      expect(alertSpy).toHaveBeenCalledWith('Post submitted!');
+    });
+
+    it('should show an error alert if addItem fails', async () => {
+      component.postTitle = 'Test Title';
+      component.selectedCategories = ['Technology'];
+      // Mock the return value for the one remaining querySelector call
+      (document.querySelector as jasmine.Spy).and.returnValue({ innerHTML: '<p>Test Content</p>' });
+
+      component.thumbnailDataString = 'data:image/png;base64,test';
+      const error = new Error('DB Error');
+      dbServiceSpy.addItem.and.rejectWith(error);
+
+      await component.submit();
+
+      expect(dbServiceSpy.addItem).toHaveBeenCalled();
+      expect(alertSpy).toHaveBeenCalledWith('There was an error submitting your post.');
+    });
   });
 });

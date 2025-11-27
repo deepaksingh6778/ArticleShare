@@ -14,6 +14,10 @@ import Quill from 'quill';
 export class PostComponent implements AfterViewInit, OnInit {
 
   thumbnailDataString: string | null = null;
+  postTitle: string = '';
+  selectedCategories: string[] = [];
+  postContent: string = '';
+  private quillEditor: Quill | null = null;
   private db: any;
 
   constructor(private dbService: DbService,private userService: UserService) {}
@@ -23,7 +27,7 @@ export class PostComponent implements AfterViewInit, OnInit {
   }
 
   ngAfterViewInit() {
-    new Quill('#editor', {
+    this.quillEditor = new Quill('#editor', {
       theme: 'snow',
       placeholder: 'Write your article here...',
       modules: {
@@ -53,13 +57,13 @@ export class PostComponent implements AfterViewInit, OnInit {
     }
   }
   async submit() {
-    const postTitle = (document.getElementById('postTitle') as HTMLInputElement).value;
-    const categorySelect = document.getElementById('categorySelect') as HTMLSelectElement;
-    const selectedCategories = Array.from(categorySelect.selectedOptions).map(option => option.value);
-    const postContent = (document.querySelector('.ql-editor') as HTMLElement).innerHTML;
-    const thumbnail = this.thumbnailDataString;
+    // This is a temporary way to get the content from the editor.
+    // In a real app, you might use the editor's events to update a model.
+    this.postContent = document.querySelector('.ql-editor')?.innerHTML || '';
 
-    if (!postTitle || selectedCategories.length === 0 || !postContent) {
+    const thumbnail = this.thumbnailDataString;
+  
+    if (!this.postTitle || this.selectedCategories.length === 0 || !this.postContent || !thumbnail) {
       alert('Please fill out all fields before submitting.');
       return;
     }
@@ -67,14 +71,14 @@ export class PostComponent implements AfterViewInit, OnInit {
     try {
       // Create a new object for insertion without the 'id' property to allow auto-increment to work.      
       const postToAdd = {
-        title: postTitle,
-        description: postContent,
+        title: this.postTitle,
+        description: this.postContent,
         date: "TODAY",
         views: 0,
         likes: 0,
         image: this.thumbnailDataString,
         author: { name: this.userService.getUserName() || 'Guest', role: 'Editor & Writer' },
-        tags: selectedCategories
+        tags: this.selectedCategories
       };
       const newId = await this.dbService.addItem(postToAdd);
       console.log('Post added successfully with id:', newId);
