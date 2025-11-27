@@ -30,8 +30,15 @@ A SPA Angular web app to develop an online publishing platform that facilitates 
 
 - **Frontend:** Angular  
 - **Backend:** Angular Service   
+- **Worker:**  Worker added to calculate read time of article
 - **Database:** IndexedDB:client-side database built directly into modern web browsers 
 - **Hosting:** GitHub Pages  
+
+---
+
+###  Test Cases
+- Test cases added for post screen
+- Test cases added for db service
 
 ---
 
